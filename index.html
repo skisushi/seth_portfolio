@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Seth Horowitz | Travel Technology</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:      #ffffff;
+      --bg-alt:  #f8f9fb;
+      --card:    #ffffff;
+      --border:  #e4e7ec;
+      --blue:    #1d4ed8;
+      --blue-lt: #2563eb;
+      --green:   #059669;
+      --text:    #0f172a;
+      --body:    #374151;
+      --muted:   #6b7280;
+      --label:   #9ca3af;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', system-ui, sans-serif;
+      font-size: 16px;
+      line-height: 1.65;
+    }
+
+    a { color: var(--blue-lt); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── STICKY NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 40px;
+    }
+    .nav-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 52px;
+    }
+    .nav-name {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: 0.02em;
+    }
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 0.82rem;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      transition: color 0.15s;
+    }
+    .nav-links a:hover { color: var(--text); text-decoration: none; }
+
+    /* ── HERO ── */
+    .hero {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 72px 40px 64px;
+      border-bottom: 1px solid var(--border);
+    }
+    .hero-eyebrow {
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--blue-lt);
+      margin-bottom: 16px;
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 300;
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+      margin-bottom: 20px;
+      color: var(--text);
+    }
+    .hero h1 strong { font-weight: 600; }
+    .hero-tagline {
+      font-size: 1.1rem;
+      color: var(--muted);
+      max-width: 580px;
+      line-height: 1.6;
+      border-left: 3px solid var(--blue-lt);
+      padding-left: 16px;
+      margin-bottom: 32px;
+    }
+    .hero-contact {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      font-size: 0.85rem;
+      color: var(--label);
+    }
+    .hero-contact a { color: var(--blue-lt); }
+
+    /* ── SECTIONS ── */
+    .section {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 56px 40px;
+      border-bottom: 1px solid var(--border);
+    }
+    .section:last-of-type { border-bottom: none; }
+
+    .section-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--blue-lt);
+      margin-bottom: 10px;
+    }
+    .section h2 {
+      font-size: 1.55rem;
+      font-weight: 500;
+      margin-bottom: 6px;
+      line-height: 1.25;
+      color: var(--text);
+    }
+    .section-sub {
+      font-size: 0.95rem;
+      color: var(--muted);
+      margin-bottom: 24px;
+    }
+    .section p {
+      color: var(--body);
+      margin-bottom: 16px;
+      max-width: 680px;
+    }
+    .section p:last-of-type { margin-bottom: 0; }
+
+    /* ── CTA BUTTON ── */
+    .cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 24px;
+      padding: 11px 22px;
+      border-radius: 6px;
+      font-size: 0.88rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.18s;
+      text-decoration: none !important;
+    }
+    .cta-primary {
+      background: var(--blue-lt);
+      color: #fff;
+      border: 1px solid var(--blue-lt);
+    }
+    .cta-primary:hover { background: var(--blue); border-color: var(--blue); }
+
+    .cta-green {
+      background: var(--green);
+      color: #fff;
+      border: 1px solid var(--green);
+    }
+    .cta-green:hover { background: #047857; border-color: #047857; }
+
+    .cta-ghost {
+      background: transparent;
+      color: var(--blue-lt);
+      border: 1px solid var(--border);
+    }
+    .cta-ghost:hover { border-color: var(--blue-lt); background: rgba(37,99,235,0.08); }
+
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    /* ── STATS ROW ── */
+    .stats-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 32px;
+      margin: 28px 0;
+      padding: 28px 32px;
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+    .stat-num {
+      font-size: 2rem;
+      font-weight: 300;
+      color: var(--blue-lt);
+      display: block;
+      line-height: 1;
+    }
+    .stat-lbl {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    /* ── PROBLEM/SOLUTION CARDS ── */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin: 24px 0;
+    }
+    @media (max-width: 580px) { .two-col { grid-template-columns: 1fr; } }
+
+    .problem-card {
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      border-top: 3px solid #dc2626;
+      padding: 20px;
+      border-radius: 4px;
+    }
+    .solution-card {
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      border-top: 3px solid var(--green);
+      padding: 20px;
+      border-radius: 4px;
+    }
+    .card-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+    .card-title {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+    .card-body {
+      font-size: 0.875rem;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    /* ── DEMO SECTION ── */
+    .demo-preview {
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 28px;
+      margin: 24px 0;
+    }
+    .demo-scenarios {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 20px;
+    }
+    @media (max-width: 580px) { .demo-scenarios { grid-template-columns: 1fr; } }
+
+    .scenario {
+      background: #ffffff;
+      border: 1px solid #dbeafe;
+      border-left: 3px solid var(--blue-lt);
+      border-radius: 4px;
+      padding: 16px;
+    }
+    .scenario-num {
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--blue-lt);
+      margin-bottom: 6px;
+    }
+    .scenario-title {
+      font-size: 0.92rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .scenario-desc {
+      font-size: 0.83rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .time-badge {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 2px 8px;
+      background: #d1fae5;
+      border: 1px solid #6ee7b7;
+      color: #065f46;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-family: monospace;
+    }
+
+    /* ── TECH SECTION ── */
+    .tech-docs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin: 24px 0;
+    }
+    @media (max-width: 580px) { .tech-docs { grid-template-columns: 1fr; } }
+
+    .tech-card {
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 20px 20px 16px;
+    }
+    .tech-card-icon {
+      font-size: 1.4rem;
+      margin-bottom: 10px;
+    }
+    .tech-card-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .tech-card-desc {
+      font-size: 0.83rem;
+      color: var(--muted);
+      line-height: 1.55;
+      margin-bottom: 14px;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--bg-alt);
+      border-top: 1px solid var(--border);
+      padding: 36px 40px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+    footer a { color: var(--blue-lt); }
+    .footer-inner { max-width: 900px; margin: 0 auto; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      nav { padding: 0 20px; }
+      .nav-links { gap: 16px; }
+      .nav-links a { font-size: 0.75rem; }
+      .hero, .section { padding-left: 24px; padding-right: 24px; }
+      footer { padding: 28px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <div class="nav-inner">
+    <span class="nav-name">Seth Horowitz</span>
+    <ul class="nav-links">
+      <li><a href="#article">Article</a></li>
+      <li><a href="#veyant">Veyant</a></li>
+      <li><a href="#demo">Demo</a></li>
+      <li><a href="#technical">Technical</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <p class="hero-eyebrow">Travel Technology &nbsp;·&nbsp; Product &amp; AI &nbsp;·&nbsp; Salt Lake City, UT</p>
+  <h1><strong>Seth Horowitz</strong></h1>
+  <p class="hero-tagline">Twenty years inside the systems that run the travel industry. A published thesis on where AI changes everything, and five months of active startup work to test it. Looking for the right team to build it at scale.</p>
+  <div class="hero-contact">
+    <span>seth.horowitz@veyant.ai</span>
+    <span>·</span>
+    <a href="https://linkedin.com/in/sethahorowitz" target="_blank">LinkedIn</a>
+    <span>·</span>
+    <span>Open to remote &amp; hybrid</span>
+  </div>
+
+  <div class="stats-row" style="margin-top: 40px;">
+    <div>
+      <span class="stat-num">20+</span>
+      <span class="stat-lbl">Years travel tech</span>
+    </div>
+    <div>
+      <span class="stat-num">60+</span>
+      <span class="stat-lbl">Airlines supported at Navitaire</span>
+    </div>
+    <div>
+      <span class="stat-num">5</span>
+      <span class="stat-lbl">Months active Veyant work</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── ARTICLE ── -->
+<div class="section" id="article">
+  <p class="section-label">Where It Started</p>
+  <h2>The Evolution of Travel Technology</h2>
+  <p class="section-sub">From GDS to My Travel Data Cube &nbsp;·&nbsp; Published on Iterative Livings, 2025</p>
+
+  <p>On a flight from Singapore to LAX in 2023, I watched a plane full of exhausted travelers fumble with apps trying to book ground transportation after midnight. Each one solving the same problem alone. I sketched a concept on a napkin: what if one trusted data layer knew your preferences, your loyalty status, your calendar, and could act on your behalf? I called it My Travel Data Cube.</p>
+
+  <p>The article traces my career from witnessing my parents book a trip at Hunt Travel in Poughkeepsie in the 1980s, to working Continental Airlines reservation lines, to helping build the PSS systems used by 60+ airlines at Navitaire. It maps every wave of travel technology and makes the case that the next one is not a better search interface — it is the elimination of search entirely.</p>
+
+  <p>The article generated inbound conversations from industry colleagues and a European venture capital investor. It also answered its own question: if the technology was finally ready, why hadn't someone built this? That question became Veyant.</p>
+
+  <a class="cta cta-primary" href="https://iterativelivings.com/2025/04/06/the-evolution-of-travel-technology/" target="_blank">
+    Read the article &rarr;
+  </a>
+</div>
+
+<!-- ── VEYANT ── -->
+<div class="section" id="veyant">
+  <p class="section-label">The Work</p>
+  <h2>Veyant &nbsp;&mdash;&nbsp; AI Orchestration for Corporate Travel</h2>
+  <p class="section-sub">Active project, Oct 2025&ndash;Feb 2026 &nbsp;·&nbsp; Paused; not abandoned</p>
+
+  <p>Every travel platform makes users search. Veyant was built to eliminate search entirely — to give AI agents the infrastructure they need to not just find options, but act on them.</p>
+
+  <div class="two-col">
+    <div class="problem-card">
+      <p class="card-label">The Problem</p>
+      <p class="card-title">Two structural barriers block AI in travel</p>
+      <p class="card-body">The Trust Barrier: travelers will not share data with platforms that have conflicts of interest. The Capability Barrier: nobody has built the connectivity layer to actually transact across suppliers with full policy and loyalty context.</p>
+      <p class="card-body" style="margin-top:8px;">Result: 83% of TMC tickets handled manually at $20 each. 45-minute booking battles. Zero personalization.</p>
+    </div>
+    <div class="solution-card">
+      <p class="card-label">The Concept</p>
+      <p class="card-title">Three-Cube Architecture + AI Agents</p>
+      <p class="card-body">My Travel Cube (traveler data, loyalty, preferences), Corporate Cube (policies, rates, approvals), Supplier Cube (NDC/GDS connectivity). Five AI agents working in parallel to take a natural language request to confirmed booking.</p>
+      <p class="card-body" style="margin-top:8px;">From $25/trip in 1985, to $10 in 2000, to $5 in 2020, to $2 in the AI era. The economics of getting this right are significant.</p>
+    </div>
+  </div>
+
+  <p>Five months of active work produced original frameworks, working architecture, a product backlog, four wireframed interfaces, a working demo built with Claude Code, and investor materials grounded in primary market research with TMC operators. The pitch deck tells the full story.</p>
+
+  <a class="cta cta-ghost" href="docs/veyant-pitch-deck.pdf" target="_blank">
+    View the pitch deck &rarr;
+  </a>
+</div>
+
+<!-- ── DEMO ── -->
+<div class="section" id="demo">
+  <p class="section-label">See It Working</p>
+  <h2>Live Demo &nbsp;&mdash;&nbsp; AI Travel Orchestration</h2>
+  <p class="section-sub">Built with React + Claude Code &nbsp;·&nbsp; Two scenarios, fully scripted</p>
+
+  <p>The fastest way to understand what Veyant was building is to watch it work. This proof-of-concept shows two scenarios: the system acting proactively when something changes, and the system responding intelligently to a natural language request.</p>
+
+  <div class="demo-preview">
+    <p style="font-size:0.85rem; color:var(--muted); margin-bottom:16px;">Traveler: Sarah Chen, Acme Corp &nbsp;·&nbsp; SkyTeam Platinum Elite &nbsp;·&nbsp; Marriott Bonvoy Platinum</p>
+    <div class="demo-scenarios">
+      <div class="scenario">
+        <p class="scenario-num">Scenario 1</p>
+        <p class="scenario-title">Calendar Alert &rarr; Auto-Rebook</p>
+        <p class="scenario-desc">Sarah's London meeting extends by one day. The system detects the calendar change, checks her loyalty status, corporate policy, and available flights, and surfaces a recommendation — without her asking.</p>
+        <span class="time-badge">30 seconds vs 25+ minutes manual</span>
+      </div>
+      <div class="scenario">
+        <p class="scenario-num">Scenario 2</p>
+        <p class="scenario-title">Chat Request &rarr; Complex Itinerary</p>
+        <p class="scenario-desc">Sarah requests a NYC stopover on the way home from London. The system books the London extension, a transatlantic upgrade using her miles, a NYC hotel, and a return flight — applying her status benefits at every step.</p>
+        <span class="time-badge">4 changes confirmed in 90 seconds</span>
+      </div>
+    </div>
+  </div>
+
+  <a class="cta cta-green" href="demo/index.html" target="_blank">
+    Try the demo &rarr;
+  </a>
+</div>
+
+<!-- ── TECHNICAL ── -->
+<div class="section" id="technical">
+  <p class="section-label">Technical Depth</p>
+  <h2>Architecture &amp; AI Governance</h2>
+  <p class="section-sub">For engineers and technical leaders who want to go deeper</p>
+
+  <p>These two documents represent the technical thinking behind Veyant. The first covers the system architecture. The second is original thinking on a problem most AI teams get wrong.</p>
+
+  <div class="tech-docs">
+    <div class="tech-card">
+      <div class="tech-card-icon">⚙️</div>
+      <p class="tech-card-title">Agentic GraphQL Mesh Architecture</p>
+      <p class="tech-card-desc">Why sequential MCP tool calls fail at scale (2.5 seconds, 6 roundtrips) and how a parallel GraphQL mesh solves it (800ms, 1 roundtrip). Covers Brain/Hand/Muscle separation of concerns, Azure PaaS layer design, Three-Cube schema federation, and field-level security.</p>
+      <a class="cta cta-ghost" href="docs/veyant-architecture.pdf" target="_blank" style="margin-top:0; padding:8px 16px; font-size:0.82rem;">View architecture &rarr;</a>
+    </div>
+    <div class="tech-card">
+      <div class="tech-card-icon">🛡️</div>
+      <p class="tech-card-title">Universal AI Guardrails Framework</p>
+      <p class="tech-card-desc">Most companies try to solve AI safety through model training. This framework argues guardrails are infrastructure, not training — and documents the specific failure patterns that emerge when AI books travel without programmatic policy access. Includes schema examples and adversarial test cases.</p>
+      <a class="cta cta-ghost" href="docs/veyant-guardrails.pdf" target="_blank" style="margin-top:0; padding:8px 16px; font-size:0.82rem;">View framework &rarr;</a>
+    </div>
+  </div>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-inner">
+    <p>Seth Horowitz &nbsp;·&nbsp; Travel Technology Leader &nbsp;·&nbsp; Salt Lake City, UT</p>
+    <p style="margin-top: 8px;">
+      <a href="mailto:seth.horowitz@veyant.ai">seth.horowitz@veyant.ai</a>
+      &nbsp;·&nbsp;
+      <a href="https://linkedin.com/in/sethahorowitz" target="_blank">LinkedIn</a>
+      &nbsp;·&nbsp;
+      <a href="https://iterativelivings.com" target="_blank">iterativelivings.com</a>
+    </p>
+    <p style="margin-top: 16px; color: var(--label); font-size: 0.78rem;">
+      Open to senior product, strategy, or BD roles in travel technology &nbsp;·&nbsp; March 2026
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>
