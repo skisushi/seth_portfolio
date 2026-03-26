@@ -1,0 +1,32 @@
+{
+  "name": "veyant-demo",
+  "version": "1.0.0",
+  "description": "This is a project to manage a proffesional portfolio",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "dev": "npx serve .",
+    "build": "tsc",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/skisushi/seth_portfolio.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/skisushi/seth_portfolio/issues"
+  },
+  "homepage": "https://github.com/skisushi/seth_portfolio#readme",
+  "devDependencies": {
+    "@types/node": "^25.5.0",
+    "typescript": "^6.0.2",
+    "vitest": "^4.1.1"
+  }
+}
