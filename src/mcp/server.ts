@@ -131,7 +131,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
                     supplier: { type: 'string' },
                     rate: { type: 'number' },
                     cabin: { type: 'string' },
-                    upgradeApplied: { type: 'boolean' },
+                    upgradeApplied: { type: 'boolean', description: 'Set true when the cabin reflects a loyalty miles or elite status upgrade — policy then evaluates the base purchased fare, not the upgraded cabin' },
                     city: { type: 'string' },
                   },
                   required: ['type', 'supplier', 'rate'],
@@ -181,10 +181,24 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
 
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
   const { name, arguments: args } = request.params;
+  try {
 
   if (name === 'check_policy_compliance') {
     const proposal = args?.proposal as TripChangeProposal;
-    const result = checkPolicyCompliance(proposal);
+
+    // In this catalog, business and first class cabins only exist as loyalty upgrades
+    // (DL401 business via 25k miles, AA87 first via BA Club Gold status benefit).
+    // Auto-set upgradeApplied so policy evaluates the base purchased fare, not the cabin.
+    const upgradeOnlyCabins = new Set(['business', 'first']);
+    const normalizedSegments = proposal.segments.map((seg) => {
+      if (seg.type !== 'flight' || seg.upgradeApplied === true) return seg;
+      if (seg.cabin && upgradeOnlyCabins.has(seg.cabin.toLowerCase())) {
+        return { ...seg, upgradeApplied: true };
+      }
+      return seg;
+    });
+
+    const result = checkPolicyCompliance({ ...proposal, segments: normalizedSegments });
     return {
       content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
     };
@@ -210,7 +224,14 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
     };
   }
 
-  throw new Error(`Unknown tool: ${name}`);
+    throw new Error(`Unknown tool: ${name}`);
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    return {
+      content: [{ type: 'text', text: `Error: ${message}` }],
+      isError: true,
+    };
+  }
 });
 
 // ─── START ────────────────────────────────────────────────────────────────────
