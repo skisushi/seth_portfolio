@@ -376,6 +376,7 @@
       <li><a href="#article">Article</a></li>
       <li><a href="#veyant">Veyant</a></li>
       <li><a href="#demo">Demo</a></li>
+      <li><a href="#mcp">MCP Server</a></li>
     </ul>
   </div>
 </nav>
@@ -487,6 +488,39 @@
   </a>
 </div>
 
+
+<!-- ── MCP SERVER ── -->
+<div class="section" id="mcp">
+  <p class="section-label">Working Code</p>
+  <h2>Veyant MCP Server &nbsp;&mdash;&nbsp; AI Travel Orchestration</h2>
+  <p class="section-sub">TypeScript / Node.js / Model Context Protocol &nbsp;·&nbsp; <a href="https://github.com/skisushi/seth_portfolio" target="_blank">GitHub &rarr;</a></p>
+
+  <p>Beyond the demo UI, I built a working MCP (Model Context Protocol) server that gives Claude structured access to three enterprise travel capabilities as callable tools: supplier search, traveler preference scoring, and corporate policy compliance.</p>
+
+  <div class="two-col">
+    <div class="problem-card" style="border-top-color: var(--blue-lt);">
+      <p class="card-label">The Tools</p>
+      <p class="card-title">Three structured capabilities</p>
+      <p class="card-body"><strong>search_travel_options</strong> — query flights and hotels by route and city.<br><br>
+      <strong>get_preference_score</strong> — score any option 0–100 against the traveler's profile (carrier, seat type, loyalty, change fees).<br><br>
+      <strong>check_policy_compliance</strong> — validate a proposed booking and return an explicit pass, exception, or violation verdict with per-rule detail.</p>
+    </div>
+    <div class="solution-card">
+      <p class="card-label">The Key Design Decision</p>
+      <p class="card-title">Policy in a dedicated system, not a prompt</p>
+      <p class="card-body">The compliance tool is deterministic and auditable. In this demo it runs as a TypeScript rule engine. In production it would be replaced by an ML model trained on real booking and approval history — capturing the implicit policy that lives in years of decisions, not just the written rulebook. Claude receives a structured verdict either way.</p>
+    </div>
+  </div>
+
+  <p>The interesting case: Delta's business cabin normally violates Acme Corp policy (economy and premium economy only approved). But the traveler used loyalty miles for the upgrade — not a fare upgrade. Same cabin, different compliance outcome. The tool handles that distinction explicitly.</p>
+
+  <p style="font-size: 0.88rem; color: var(--muted); border-left: 3px solid var(--border); padding-left: 14px; margin-top: 20px;">This was built collaboratively with Claude Code through iterative requirements definition — not hand-coded. The architecture and implementation emerged from that process. My role was product direction: the data model, the scenario, the policy constraints, and the vision for what a production system would look like. I consider that the relevant skill for AI product work.</p>
+
+  <div class="cta-row">
+    <a class="cta cta-primary" href="https://github.com/skisushi/seth_portfolio" target="_blank">View on GitHub &rarr;</a>
+    <a class="cta cta-ghost" href="mailto:seth.horowitz@veyant.ai">Request a live demo</a>
+  </div>
+</div>
 
 <!-- ── FOOTER ── -->
 <footer>
