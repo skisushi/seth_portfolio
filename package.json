@@ -10,7 +10,8 @@
     "dev": "npx serve .",
     "build": "tsc",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "start:mcp": "node dist/mcp/server.js"
   },
   "repository": {
     "type": "git",
@@ -28,5 +29,8 @@
     "@types/node": "^25.5.0",
     "typescript": "^6.0.2",
     "vitest": "^4.1.1"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.28.0"
   }
 }
