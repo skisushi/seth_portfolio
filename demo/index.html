@@ -158,6 +158,25 @@
       transition: border-color 0.3s;
     }
     .trip-card.confirmed { border-color: rgba(16,185,129,0.4); background: rgba(16,185,129,0.04); }
+
+    /* Mobile panel toggle tab bar */
+    .mobile-tab {
+      flex: 1;
+      padding: 9px 4px;
+      font-size: 11px;
+      font-family: 'JetBrains Mono', monospace;
+      text-align: center;
+      cursor: pointer;
+      transition: color 0.15s, border-color 0.15s;
+      border-bottom: 2px solid transparent;
+      letter-spacing: 0.04em;
+      background: none;
+      border-top: none;
+      border-left: none;
+      border-right: none;
+    }
+    .mobile-tab.active  { color: #2563EB; border-bottom-color: #2563EB; }
+    .mobile-tab.inactive { color: #64748b; }
   </style>
 </head>
 <body>
@@ -458,7 +477,7 @@ function RightPanelS1({ showRec, approved, onApprove }) {
           <div className="text-xs font-mono text-text-secondary uppercase tracking-widest mb-0.5">Trip Cockpit</div>
           <div className="text-base font-medium text-text-primary">London · Sept 14–18</div>
         </div>
-        <div className="text-right">
+        <div className="text-right hidden sm:block">
           <div className="text-xs text-text-secondary font-mono">Acme Corp</div>
           <div className="text-xs text-text-secondary mt-0.5">Marriott Bonvoy Platinum · BA Club Gold</div>
         </div>
@@ -670,7 +689,7 @@ function S2Cockpit({ showRec, showApprove, approved, onApprove }) {
             {headerLabel}
           </div>
         </div>
-        <div className="text-right">
+        <div className="text-right hidden sm:block">
           <div className="text-xs text-text-secondary font-mono">Acme Corp</div>
           <div className="text-xs text-text-secondary mt-0.5">Marriott Bonvoy Platinum · SkyTeam Platinum Elite</div>
         </div>
@@ -845,6 +864,7 @@ function S2Cockpit({ showRec, showApprove, approved, onApprove }) {
 // ─────────────────────────────────────────────────────────────────────────────
 function App() {
   const [scenario, setScenario] = useState(1);
+  const [mobilePanel, setMobilePanel] = useState('left');
 
   // S1 state
   const [s1Messages, setS1Messages] = useState([]);
@@ -863,6 +883,10 @@ function App() {
   const [done, setDone] = useState(false);
   const timersRef = useRef([]);
 
+  // Auto-switch to cockpit panel on mobile when recommendations appear
+  useEffect(() => { if (s1ShowRec) setMobilePanel('right'); }, [s1ShowRec]);
+  useEffect(() => { if (s2ShowRec) setMobilePanel('right'); }, [s2ShowRec]);
+
   const clearTimers = () => {
     timersRef.current.forEach(t => clearTimeout(t));
     timersRef.current = [];
@@ -876,7 +900,7 @@ function App() {
     setRunning(false); setDone(false);
   };
 
-  const switchScenario = (s) => { resetAll(); setScenario(s); };
+  const switchScenario = (s) => { resetAll(); setScenario(s); setMobilePanel('left'); };
 
   // S2: fires when Sarah sends her message (typed or auto via Run Demo)
   const handleS2Send = (text) => {
@@ -919,55 +943,86 @@ function App() {
   return (
     <div className="min-h-screen bg-shell flex flex-col" style={{ fontFamily: "'DM Sans', sans-serif" }}>
       {/* Nav */}
-      <nav className="border-b border-card-border px-6 py-3 flex items-center justify-between flex-shrink-0">
-        <div className="flex items-center gap-3">
-          <div className="w-7 h-7 rounded-lg bg-brand flex items-center justify-center flex-shrink-0">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-              <path d="M7 1L12 4V10L7 13L2 10V4L7 1Z" stroke="white" strokeWidth="1.5" fill="none"/>
-              <circle cx="7" cy="7" r="2" fill="white"/>
-            </svg>
+      <nav className="border-b border-card-border px-4 md:px-6 py-2.5 flex-shrink-0">
+        {/* Row 1: logo + run controls */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2.5">
+            <div className="w-7 h-7 rounded-lg bg-brand flex items-center justify-center flex-shrink-0">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M7 1L12 4V10L7 13L2 10V4L7 1Z" stroke="white" strokeWidth="1.5" fill="none"/>
+                <circle cx="7" cy="7" r="2" fill="white"/>
+              </svg>
+            </div>
+            <span className="text-text-primary font-semibold text-base tracking-tight">Veyant</span>
+            <span className="text-text-secondary text-xs font-mono border border-slate-700 rounded px-2 py-0.5 hidden sm:inline">AI Travel Orchestration</span>
           </div>
-          <span className="text-text-primary font-semibold text-base tracking-tight">Veyant</span>
-          <span className="text-text-secondary text-xs font-mono border border-slate-700 rounded px-2 py-0.5 hidden sm:inline">AI Travel Orchestration</span>
+
+          <div className="flex items-center gap-2">
+            {/* Scenario selector — desktop only in row 1 */}
+            <div className="hidden md:flex items-center gap-2 mr-2">
+              <button className={`scenario-tab ${scenario === 1 ? 'active' : 'inactive'}`}
+                      onClick={() => switchScenario(1)}>
+                S1: Calendar Alert
+              </button>
+              <button className={`scenario-tab ${scenario === 2 ? 'active' : 'inactive'}`}
+                      onClick={() => switchScenario(2)}>
+                S2: Chat Request
+              </button>
+            </div>
+
+            {/* Run controls */}
+            {(running || done) && !approved && (
+              <button onClick={resetAll}
+                      className="text-xs text-text-secondary hover:text-text-primary border border-slate-700 rounded-lg px-3 py-1.5 transition-colors">
+                Reset
+              </button>
+            )}
+            <button onClick={runDemo} disabled={running}
+                    className="text-sm font-medium px-4 py-1.5 rounded-lg transition-all"
+                    style={{
+                      background: running ? '#334155' : 'linear-gradient(135deg, #2563EB 0%, #1d4ed8 100%)',
+                      color: running ? '#64748b' : 'white',
+                      cursor: running ? 'not-allowed' : 'pointer',
+                      boxShadow: running ? 'none' : '0 0 0 1px rgba(37,99,235,0.4)',
+                    }}>
+              {running ? 'Running…' : done ? 'Run Again' : 'Run Demo'}
+            </button>
+          </div>
         </div>
 
-        {/* Scenario selector */}
-        <div className="flex items-center gap-2">
-          <button className={`scenario-tab ${scenario === 1 ? 'active' : 'inactive'}`}
+        {/* Row 2: scenario selector — mobile only */}
+        <div className="flex md:hidden items-center gap-2 mt-2 pt-2 border-t border-slate-800">
+          <button className={`scenario-tab flex-1 text-center ${scenario === 1 ? 'active' : 'inactive'}`}
                   onClick={() => switchScenario(1)}>
             S1: Calendar Alert
           </button>
-          <button className={`scenario-tab ${scenario === 2 ? 'active' : 'inactive'}`}
+          <button className={`scenario-tab flex-1 text-center ${scenario === 2 ? 'active' : 'inactive'}`}
                   onClick={() => switchScenario(2)}>
             S2: Chat Request
           </button>
         </div>
-
-        {/* Run controls */}
-        <div className="flex items-center gap-2">
-          {(running || done) && !approved && (
-            <button onClick={resetAll}
-                    className="text-xs text-text-secondary hover:text-text-primary border border-slate-700 rounded-lg px-3 py-1.5 transition-colors">
-              Reset
-            </button>
-          )}
-          <button onClick={runDemo} disabled={running}
-                  className="text-sm font-medium px-4 py-1.5 rounded-lg transition-all"
-                  style={{
-                    background: running ? '#334155' : 'linear-gradient(135deg, #2563EB 0%, #1d4ed8 100%)',
-                    color: running ? '#64748b' : 'white',
-                    cursor: running ? 'not-allowed' : 'pointer',
-                    boxShadow: running ? 'none' : '0 0 0 1px rgba(37,99,235,0.4)',
-                  }}>
-            {running ? 'Running…' : done ? 'Run Again' : 'Run Demo'}
-          </button>
-        </div>
       </nav>
 
+      {/* Mobile panel toggle tab bar — hidden on md+ */}
+      <div className="flex md:hidden border-b border-card-border flex-shrink-0 bg-card">
+        <button
+          className={`mobile-tab ${mobilePanel === 'left' ? 'active' : 'inactive'}`}
+          onClick={() => setMobilePanel('left')}>
+          {scenario === 1 ? 'ACTIVITY FEED' : 'CHAT'}
+        </button>
+        <button
+          className={`mobile-tab ${mobilePanel === 'right' ? 'active' : 'inactive'}`}
+          onClick={() => setMobilePanel('right')}>
+          TRIP COCKPIT
+        </button>
+      </div>
+
       {/* Two-panel layout */}
-      <div className="flex flex-1 overflow-hidden" style={{ height: 'calc(100vh - 53px)' }}>
+      <div className="flex flex-col md:flex-row flex-1 overflow-hidden">
         {/* Left */}
-        <div className="w-5/12 border-r border-card-border bg-card overflow-hidden flex flex-col">
+        <div className={`md:w-5/12 border-card-border bg-card overflow-hidden flex-col
+                         md:border-r md:flex
+                         ${mobilePanel === 'left' ? 'flex flex-1' : 'hidden'}`}>
           {scenario === 1
             ? <LeftPanelS1 messages={s1Messages} running={running} confirmed={s1Approved} />
             : <LeftPanelS2 items={s2Items} running={running} confirmed={s2Approved}
@@ -976,7 +1031,9 @@ function App() {
           }
         </div>
         {/* Right */}
-        <div className="w-7/12 bg-shell overflow-hidden flex flex-col">
+        <div className={`md:w-7/12 bg-shell overflow-hidden flex-col
+                         md:flex
+                         ${mobilePanel === 'right' ? 'flex flex-1' : 'hidden'}`}>
           {scenario === 1
             ? <RightPanelS1 showRec={s1ShowRec} approved={s1Approved}
                             onApprove={() => { setS1Approved(true); setDone(true); }} />

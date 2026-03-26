@@ -3,1050 +3,531 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Veyant — AI Travel Orchestration</title>
+  <title>Seth Horowitz | Travel Technology</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            brand: '#2563EB',
-            success: '#10B981',
-            warning: '#F59E0B',
-            shell: '#0F172A',
-            card: '#1E293B',
-            'card-border': '#334155',
-            'text-primary': '#F8FAFC',
-            'text-secondary': '#94A3B8',
-          },
-          fontFamily: {
-            sans: ['DM Sans', 'sans-serif'],
-            mono: ['JetBrains Mono', 'monospace'],
-          },
-        }
-      }
-    }
-  </script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <style>
-    * { box-sizing: border-box; }
-    body { margin: 0; background: #0F172A; font-family: 'DM Sans', sans-serif; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    @keyframes fadeSlideIn {
-      from { opacity: 0; transform: translateY(8px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes fadeSlideRight {
-      from { opacity: 0; transform: translateX(10px); }
-      to   { opacity: 1; transform: translateX(0); }
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to   { opacity: 1; }
-    }
-    @keyframes pulse-dot {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.3; }
+    :root {
+      --bg:      #ffffff;
+      --bg-alt:  #f8f9fb;
+      --card:    #ffffff;
+      --border:  #e4e7ec;
+      --blue:    #1d4ed8;
+      --blue-lt: #2563eb;
+      --green:   #059669;
+      --text:    #0f172a;
+      --body:    #374151;
+      --muted:   #6b7280;
+      --label:   #9ca3af;
     }
 
-    .msg-enter       { animation: fadeSlideIn 0.35s ease both; }
-    .msg-enter-right { animation: fadeSlideRight 0.35s ease both; }
-    .fade-in         { animation: fadeIn 0.4s ease both; }
-    .card-slide      { animation: fadeSlideIn 0.45s cubic-bezier(0.16,1,0.3,1) both; }
-    .pulse-dot       { animation: pulse-dot 1.2s ease infinite; }
+    html { scroll-behavior: smooth; }
 
-    .tag {
-      display: inline-block;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 10px;
-      font-weight: 500;
-      padding: 2px 7px;
-      border-radius: 4px;
-      letter-spacing: 0.04em;
-      margin-right: 6px;
-      vertical-align: middle;
-      white-space: nowrap;
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', system-ui, sans-serif;
+      font-size: 16px;
+      line-height: 1.65;
     }
-    .tag-calendar { background: #1e3a5f; color: #60a5fa; }
-    .tag-brain    { background: #1e2d5a; color: #818cf8; border: 1px solid #3730a3; }
-    .tag-bridge   { background: #1a3a2a; color: #34d399; border: 1px solid #065f46; }
-    .tag-veyant   { background: #1e3a5f; color: #60a5fa; border: 1px solid #1d4ed8; }
 
-    .strikethrough { text-decoration: line-through; opacity: 0.45; }
+    a { color: var(--blue-lt); text-decoration: none; }
+    a:hover { text-decoration: underline; }
 
-    .approve-btn {
-      background: linear-gradient(135deg, #10B981 0%, #059669 100%);
-      transition: all 0.2s ease;
+    /* ── STICKY NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 40px;
     }
-    .approve-btn:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 4px 20px rgba(16,185,129,0.35);
-    }
-    .approve-btn:active { transform: translateY(0); }
-
-    .scrollbar-thin::-webkit-scrollbar { width: 4px; }
-    .scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
-    .scrollbar-thin::-webkit-scrollbar-thumb { background: #334155; border-radius: 2px; }
-
-    .compliant-badge {
-      background: rgba(16,185,129,0.12);
-      border: 1px solid rgba(16,185,129,0.35);
-      color: #10B981;
-    }
-    .option-card { border: 1px solid #334155; transition: border-color 0.2s; }
-    .option-card.recommended { border-color: rgba(37,99,235,0.5); }
-    .confirmed-badge { background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.3); }
-
-    /* Chat bubbles */
-    .bubble-user {
-      background: linear-gradient(135deg, #2563EB 0%, #1d4ed8 100%);
-      color: #fff;
-      border-radius: 16px 16px 4px 16px;
-      padding: 10px 14px;
-      font-size: 13px;
-      line-height: 1.5;
-      max-width: 88%;
-    }
-    .bubble-veyant {
-      background: #1E293B;
-      border: 1px solid #334155;
-      color: #F8FAFC;
-      border-radius: 16px 16px 16px 4px;
-      padding: 10px 14px;
-      font-size: 13px;
-      line-height: 1.5;
-      max-width: 88%;
-    }
-    .process-row {
+    .nav-inner {
+      max-width: 900px;
+      margin: 0 auto;
       display: flex;
-      align-items: flex-start;
-      gap: 6px;
-      padding: 3px 0 3px 12px;
-      border-left: 2px solid #1e293b;
-      margin-left: 4px;
+      align-items: center;
+      justify-content: space-between;
+      height: 52px;
     }
-
-    /* Scenario tabs */
-    .scenario-tab {
-      font-size: 12px;
-      padding: 5px 14px;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: all 0.15s ease;
-      border: 1px solid transparent;
-      white-space: nowrap;
+    .nav-name {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: 0.02em;
     }
-    .scenario-tab.active {
-      background: rgba(37,99,235,0.15);
-      border-color: rgba(37,99,235,0.4);
-      color: #93c5fd;
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
     }
-    .scenario-tab.inactive {
-      color: #64748b;
-      border-color: #1e293b;
-    }
-    .scenario-tab.inactive:hover { color: #94a3b8; border-color: #334155; }
-
-    /* Trip card in S2 */
-    .trip-card {
-      border: 1px solid #334155;
-      border-radius: 12px;
-      padding: 14px;
-      background: #0f172a;
-      transition: border-color 0.3s;
-    }
-    .trip-card.confirmed { border-color: rgba(16,185,129,0.4); background: rgba(16,185,129,0.04); }
-
-    /* Mobile panel toggle tab bar */
-    .mobile-tab {
-      flex: 1;
-      padding: 9px 4px;
-      font-size: 11px;
-      font-family: 'JetBrains Mono', monospace;
-      text-align: center;
-      cursor: pointer;
-      transition: color 0.15s, border-color 0.15s;
-      border-bottom: 2px solid transparent;
+    .nav-links a {
+      font-size: 0.82rem;
+      color: var(--muted);
       letter-spacing: 0.04em;
-      background: none;
-      border-top: none;
-      border-left: none;
-      border-right: none;
+      text-transform: uppercase;
+      transition: color 0.15s;
     }
-    .mobile-tab.active  { color: #2563EB; border-bottom-color: #2563EB; }
-    .mobile-tab.inactive { color: #64748b; }
+    .nav-links a:hover { color: var(--text); text-decoration: none; }
+
+    /* ── HERO ── */
+    .hero {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 72px 40px 64px;
+      border-bottom: 1px solid var(--border);
+    }
+    .hero-eyebrow {
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--blue-lt);
+      margin-bottom: 16px;
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 300;
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+      margin-bottom: 20px;
+      color: var(--text);
+    }
+    .hero h1 strong { font-weight: 600; }
+    .hero-tagline {
+      font-size: 1.1rem;
+      color: var(--muted);
+      max-width: 580px;
+      line-height: 1.6;
+      border-left: 3px solid var(--blue-lt);
+      padding-left: 16px;
+      margin-bottom: 32px;
+    }
+    .hero-contact {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      font-size: 0.85rem;
+      color: var(--label);
+    }
+    .hero-contact a { color: var(--blue-lt); }
+
+    /* ── SECTIONS ── */
+    .section {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 56px 40px;
+      border-bottom: 1px solid var(--border);
+    }
+    .section:last-of-type { border-bottom: none; }
+
+    .section-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--blue-lt);
+      margin-bottom: 10px;
+    }
+    .section h2 {
+      font-size: 1.55rem;
+      font-weight: 500;
+      margin-bottom: 6px;
+      line-height: 1.25;
+      color: var(--text);
+    }
+    .section-sub {
+      font-size: 0.95rem;
+      color: var(--muted);
+      margin-bottom: 24px;
+    }
+    .section p {
+      color: var(--body);
+      margin-bottom: 16px;
+      max-width: 680px;
+    }
+    .section p:last-of-type { margin-bottom: 0; }
+
+    /* ── CTA BUTTON ── */
+    .cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 24px;
+      padding: 11px 22px;
+      border-radius: 6px;
+      font-size: 0.88rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.18s;
+      text-decoration: none !important;
+    }
+    .cta-primary {
+      background: var(--blue-lt);
+      color: #fff;
+      border: 1px solid var(--blue-lt);
+    }
+    .cta-primary:hover { background: var(--blue); border-color: var(--blue); }
+
+    .cta-green {
+      background: var(--green);
+      color: #fff;
+      border: 1px solid var(--green);
+    }
+    .cta-green:hover { background: #047857; border-color: #047857; }
+
+    .cta-ghost {
+      background: transparent;
+      color: var(--blue-lt);
+      border: 1px solid var(--border);
+    }
+    .cta-ghost:hover { border-color: var(--blue-lt); background: rgba(37,99,235,0.08); }
+
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    /* ── STATS ROW ── */
+    .stats-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 32px;
+      margin: 28px 0;
+      padding: 28px 32px;
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+    .stat-num {
+      font-size: 2rem;
+      font-weight: 300;
+      color: var(--blue-lt);
+      display: block;
+      line-height: 1;
+    }
+    .stat-lbl {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    /* ── PROBLEM/SOLUTION CARDS ── */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin: 24px 0;
+    }
+    @media (max-width: 580px) { .two-col { grid-template-columns: 1fr; } }
+
+    .problem-card {
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      border-top: 3px solid #dc2626;
+      padding: 20px;
+      border-radius: 4px;
+    }
+    .solution-card {
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      border-top: 3px solid var(--green);
+      padding: 20px;
+      border-radius: 4px;
+    }
+    .card-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+    .card-title {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+    .card-body {
+      font-size: 0.875rem;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    /* ── DEMO SECTION ── */
+    .demo-preview {
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 28px;
+      margin: 24px 0;
+    }
+    .demo-scenarios {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 20px;
+    }
+    @media (max-width: 580px) { .demo-scenarios { grid-template-columns: 1fr; } }
+
+    .scenario {
+      background: #ffffff;
+      border: 1px solid #dbeafe;
+      border-left: 3px solid var(--blue-lt);
+      border-radius: 4px;
+      padding: 16px;
+    }
+    .scenario-num {
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--blue-lt);
+      margin-bottom: 6px;
+    }
+    .scenario-title {
+      font-size: 0.92rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .scenario-desc {
+      font-size: 0.83rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .time-badge {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 2px 8px;
+      background: #d1fae5;
+      border: 1px solid #6ee7b7;
+      color: #065f46;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-family: monospace;
+    }
+
+    /* ── TECH SECTION ── */
+    .tech-docs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin: 24px 0;
+    }
+    @media (max-width: 580px) { .tech-docs { grid-template-columns: 1fr; } }
+
+    .tech-card {
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 20px 20px 16px;
+    }
+    .tech-card-icon {
+      font-size: 1.4rem;
+      margin-bottom: 10px;
+    }
+    .tech-card-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .tech-card-desc {
+      font-size: 0.83rem;
+      color: var(--muted);
+      line-height: 1.55;
+      margin-bottom: 14px;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--bg-alt);
+      border-top: 1px solid var(--border);
+      padding: 36px 40px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+    footer a { color: var(--blue-lt); }
+    .footer-inner { max-width: 900px; margin: 0 auto; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      nav { padding: 0 20px; }
+      .nav-links { gap: 16px; }
+      .nav-links a { font-size: 0.75rem; }
+      .hero, .section { padding-left: 24px; padding-right: 24px; }
+      footer { padding: 28px 24px; }
+    }
   </style>
 </head>
 <body>
-<div id="root"></div>
 
-<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<!-- ── NAV ── -->
+<nav>
+  <div class="nav-inner">
+    <span class="nav-name">Seth Horowitz</span>
+    <ul class="nav-links">
+      <li><a href="#article">Article</a></li>
+      <li><a href="#veyant">Veyant</a></li>
+      <li><a href="#demo">Demo</a></li>
+      <li><a href="#technical">Technical</a></li>
+    </ul>
+  </div>
+</nav>
 
-<script type="text/babel">
-const { useState, useEffect, useRef } = React;
+<!-- ── HERO ── -->
+<div class="hero">
+  <p class="hero-eyebrow">Travel Technology &nbsp;·&nbsp; Product &amp; AI &nbsp;·&nbsp; Salt Lake City, UT</p>
+  <h1><strong>Seth Horowitz</strong></h1>
+  <p class="hero-tagline">Twenty years inside the systems that run the travel industry. A published thesis on where AI changes everything, and five months of active startup work to test it. Looking for the right team to build it at scale.</p>
+  <div class="hero-contact">
+    <span>seth.horowitz@veyant.ai</span>
+    <span>·</span>
+    <a href="https://linkedin.com/in/sethahorowitz" target="_blank">LinkedIn</a>
+    <span>·</span>
+    <span>Open to remote &amp; hybrid</span>
+  </div>
 
-// ─────────────────────────────────────────────────────────────────────────────
-// SCENARIO 1 DATA  (unchanged)
-// ─────────────────────────────────────────────────────────────────────────────
-const S1_STEPS = [
-  { delay: 800,   type: 'calendar', text: 'London client meeting extended — now Wednesday Sept 18, not Tuesday Sept 17', time: '8:02 AM' },
-  { delay: 2200,  type: 'brain',    text: 'Analyzing trip context for Sarah Chen…' },
-  { delay: 3000,  type: 'brain',    text: 'Checking British Airways Club Gold status — flight change fee: $0' },
-  { delay: 3900,  type: 'brain',    text: 'Checking Marriott Platinum status — complimentary room upgrade + Executive Lounge access applied' },
-  { delay: 4900,  type: 'brain',    text: 'Reviewing Acme Corp travel policy — max hotel $350/night, London exception $420/night' },
-  { delay: 5800,  type: 'brain',    text: 'Checking calendar — Wednesday has no conflicts' },
-  { delay: 6700,  type: 'brain',    text: 'Preference match: window seat ✓, non-stop preferred ✓, Marriott preferred ✓' },
-  { delay: 7800,  type: 'bridge',   text: 'Searching British Airways — London Heathrow departures Wednesday Sept 18…' },
-  { delay: 9000,  type: 'bridge',   text: 'Extending Marriott London Park Lane — checking availability…' },
-  { delay: 10400, type: 'bridge',   text: '3 compliant options found. Preparing recommendation…' },
-  { delay: 11200, type: 'show_rec' },
-];
+  <div class="stats-row" style="margin-top: 40px;">
+    <div>
+      <span class="stat-num">20+</span>
+      <span class="stat-lbl">Years travel tech</span>
+    </div>
+    <div>
+      <span class="stat-num">60+</span>
+      <span class="stat-lbl">Airlines supported at Navitaire</span>
+    </div>
+    <div>
+      <span class="stat-num">5</span>
+      <span class="stat-lbl">Months active Veyant work</span>
+    </div>
+  </div>
+</div>
 
-// ─────────────────────────────────────────────────────────────────────────────
-// SCENARIO 2 DATA
-// ─────────────────────────────────────────────────────────────────────────────
-const S2_PREFILL = 'Please extend my London trip one day for extra meetings, and add a NYC stop to meet with a client with an escalated issue. Please get me same room, best seats and upgrades.';
+<!-- ── ARTICLE ── -->
+<div class="section" id="article">
+  <p class="section-label">Where It Started</p>
+  <h2>The Evolution of Travel Technology</h2>
+  <p class="section-sub">From GDS to My Travel Data Cube &nbsp;·&nbsp; Published on Iterative Livings, 2025</p>
 
-// Steps that fire AFTER Sarah sends her message (delays relative to send time)
-const S2_STEPS_AFTER_SEND = [
-  { delay: 800,   type: 'veyant_msg',  text: 'On it. Reviewing your full trip context now…' },
-  { delay: 1600,  type: 'brain',       text: 'Parsing request: London extension + NYC stopover + preference preservation' },
-  { delay: 2400,  type: 'brain',       text: 'Checking Marriott London Park Lane availability — Wednesday Sept 18 open, same room confirmed' },
-  { delay: 3200,  type: 'brain',       text: 'Corporate rate $385/night — within Acme Corp London exception policy' },
-  { delay: 4100,  type: 'brain',       text: 'Checking Delta Platinum + BA Club Gold status — business class upgrade on LHR-JFK eligible with 25K miles · AA87 complimentary upgrade eligible (oneworld alliance)' },
-  { delay: 5000,  type: 'brain',       text: 'Searching DL401 LHR-JFK Wednesday Sept 18 10:15am — seats available' },
-  { delay: 5900,  type: 'brain',       text: 'NYC overnight: checking Marriott Midtown — corporate rate $289/night, within policy' },
-  { delay: 6800,  type: 'brain',       text: 'Thursday return JFK-BOS: checking availability — non-stop confirmed' },
-  { delay: 7600,  type: 'brain',       text: 'Total cost impact calculated — within Acme Corp approval threshold, no manager approval needed' },
-  { delay: 8600,  type: 'bridge',      text: 'Extending Marriott London Park Lane — Wednesday confirmed · same room · $385/night corporate rate · Executive Lounge included · change fee: $0 (Marriott Platinum)' },
-  { delay: 9600,  type: 'bridge',      text: 'Booking DL401 LHR-JFK Wednesday 10:15am — Business Class upgrade confirmed · 25,000 Delta miles applied · flight change fee: $0 (Delta Platinum + BA Club Gold)' },
-  { delay: 10600, type: 'bridge',      text: 'Booking Marriott New York Midtown — Thursday Sept 19, corporate rate applied' },
-  { delay: 11500, type: 'bridge',      text: 'Booking AA87 JFK-BOS Thursday Sept 19 6:30pm — complimentary First Class upgrade applied · BA Club Gold / oneworld alliance benefit · seat 2A confirmed' },
-  { delay: 12300, type: 'bridge',      text: 'Lounge access confirmed at LHR Terminal 2 — SkyTeam Platinum benefit' },
-  { delay: 13100, type: 'show_rec2' },
-  { delay: 13700, type: 'veyant_msg',  text: 'Done. Review your modified itinerary in the Travel Cockpit. Let me know if that works or if you need anything changed.' },
-  { delay: 15400, type: 'user_msg',    text: 'Perfect. Can you add a lounge pass and prepay my overweight bag on the way home?' },
-  { delay: 16600, type: 'veyant_msg',  text: 'Done. Lounge pass added at JFK Terminal 8 and overweight bag prepaid for AA87. Your SkyTeam Platinum status earned you a discount on both — saved you $47.' },
-  { delay: 17600, type: 'show_approve2' },
-];
+  <p>On a flight from Singapore to LAX in 2023, I watched a plane full of exhausted travelers fumble with apps trying to book ground transportation after midnight. Each one solving the same problem alone. I sketched a concept on a napkin: what if one trusted data layer knew your preferences, your loyalty status, your calendar, and could act on your behalf? I called it My Travel Data Cube.</p>
 
-// ─────────────────────────────────────────────────────────────────────────────
-// SHARED: Tag
-// ─────────────────────────────────────────────────────────────────────────────
-function Tag({ type }) {
-  const map = {
-    calendar: ['CALENDAR', 'tag-calendar'],
-    brain:    ['BRAIN',    'tag-brain'],
-    bridge:   ['BRIDGE',   'tag-bridge'],
-    veyant:   ['VEYANT',   'tag-veyant'],
-  };
-  const [label, cls] = map[type] || ['INFO', 'tag-calendar'];
-  return <span className={`tag ${cls}`}>{label}</span>;
-}
+  <p>The article traces my career from witnessing my parents book a trip at Hunt Travel in Poughkeepsie in the 1980s, to working Continental Airlines reservation lines, to helping build the PSS systems used by 60+ airlines at Navitaire. It maps every wave of travel technology and makes the case that the next one is not a better search interface — it is the elimination of search entirely.</p>
 
-// ─────────────────────────────────────────────────────────────────────────────
-// SCENARIO 1 — Left Panel (notification feed)
-// ─────────────────────────────────────────────────────────────────────────────
-function S1FeedMessage({ msg }) {
-  const isMono = msg.type === 'brain' || msg.type === 'bridge';
-  return (
-    <div className="msg-enter flex gap-2 py-2.5 border-b border-slate-800 last:border-0">
-      <div className="flex-1 min-w-0">
-        <div className="flex items-start gap-1 flex-wrap">
-          <Tag type={msg.type} />
-          <span className={`text-sm leading-relaxed ${isMono ? 'text-xs text-text-secondary' : 'text-text-primary'}`}
-                style={{ fontFamily: isMono ? "'JetBrains Mono', monospace" : undefined }}>
-            {msg.text}
-          </span>
-        </div>
-        {msg.time && (
-          <div className="text-xs text-text-secondary mt-1 ml-1" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
-            {msg.time}
-          </div>
-        )}
+  <p>The article generated inbound conversations from industry colleagues and a European venture capital investor. It also answered its own question: if the technology was finally ready, why hadn't someone built this? That question became Veyant.</p>
+
+  <a class="cta cta-primary" href="https://iterativelivings.com/2025/04/06/the-evolution-of-travel-technology/" target="_blank">
+    Read the article &rarr;
+  </a>
+</div>
+
+<!-- ── VEYANT ── -->
+<div class="section" id="veyant">
+  <p class="section-label">The Work</p>
+  <h2>Veyant &nbsp;&mdash;&nbsp; AI Orchestration for Corporate Travel</h2>
+  <p class="section-sub">Active project, Oct 2025&ndash;Feb 2026 &nbsp;·&nbsp; Paused; not abandoned</p>
+
+  <p>Every travel platform makes users search. Veyant was built to eliminate search entirely — to give AI agents the infrastructure they need to not just find options, but act on them.</p>
+
+  <div class="two-col">
+    <div class="problem-card">
+      <p class="card-label">The Problem</p>
+      <p class="card-title">Two structural barriers block AI in travel</p>
+      <p class="card-body">The Trust Barrier: travelers will not share data with platforms that have conflicts of interest. The Capability Barrier: nobody has built the connectivity layer to actually transact across suppliers with full policy and loyalty context.</p>
+      <p class="card-body" style="margin-top:8px;">Result: 83% of TMC tickets handled manually at $20 each. 45-minute booking battles. Zero personalization.</p>
+    </div>
+    <div class="solution-card">
+      <p class="card-label">The Concept</p>
+      <p class="card-title">Three-Cube Architecture + AI Agents</p>
+      <p class="card-body">My Travel Cube (traveler data, loyalty, preferences), Corporate Cube (policies, rates, approvals), Supplier Cube (NDC/GDS connectivity). Five AI agents working in parallel to take a natural language request to confirmed booking.</p>
+      <p class="card-body" style="margin-top:8px;">From $25/trip in 1985, to $10 in 2000, to $5 in 2020, to $2 in the AI era. The economics of getting this right are significant.</p>
+    </div>
+  </div>
+
+  <p>Five months of active work produced original frameworks, working architecture, a product backlog, four wireframed interfaces, a working demo built with Claude Code, and investor materials grounded in primary market research with TMC operators. The pitch deck tells the full story.</p>
+
+  <a class="cta cta-ghost" href="docs/veyant-pitch-deck.pdf" target="_blank">
+    View the pitch deck &rarr;
+  </a>
+</div>
+
+<!-- ── DEMO ── -->
+<div class="section" id="demo">
+  <p class="section-label">See It Working</p>
+  <h2>Live Demo &nbsp;&mdash;&nbsp; AI Travel Orchestration</h2>
+  <p class="section-sub">Built with React + Claude Code &nbsp;·&nbsp; Two scenarios, fully scripted</p>
+
+  <p>The fastest way to understand what Veyant was building is to watch it work. This proof-of-concept shows two scenarios: the system acting proactively when something changes, and the system responding intelligently to a natural language request.</p>
+
+  <div class="demo-preview">
+    <p style="font-size:0.85rem; color:var(--muted); margin-bottom:16px;">Traveler: Sarah Chen, Acme Corp &nbsp;·&nbsp; SkyTeam Platinum Elite &nbsp;·&nbsp; Marriott Bonvoy Platinum</p>
+    <div class="demo-scenarios">
+      <div class="scenario">
+        <p class="scenario-num">Scenario 1</p>
+        <p class="scenario-title">Calendar Alert &rarr; Auto-Rebook</p>
+        <p class="scenario-desc">Sarah's London meeting extends by one day. The system detects the calendar change, checks her loyalty status, corporate policy, and available flights, and surfaces a recommendation — without her asking.</p>
+        <span class="time-badge">30 seconds vs 25+ minutes manual</span>
+      </div>
+      <div class="scenario">
+        <p class="scenario-num">Scenario 2</p>
+        <p class="scenario-title">Chat Request &rarr; Complex Itinerary</p>
+        <p class="scenario-desc">Sarah requests a NYC stopover on the way home from London. The system books the London extension, a transatlantic upgrade using her miles, a NYC hotel, and a return flight — applying her status benefits at every step.</p>
+        <span class="time-badge">4 changes confirmed in 90 seconds</span>
       </div>
     </div>
-  );
-}
+  </div>
 
-function LeftPanelS1({ messages, running, confirmed }) {
-  const bottomRef = useRef(null);
-  useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [messages, confirmed]);
+  <a class="cta cta-green" href="demo/index.html" target="_blank">
+    Try the demo &rarr;
+  </a>
+</div>
 
-  return (
-    <div className="flex flex-col h-full">
-      <div className="px-5 py-4 border-b border-card-border flex items-center justify-between">
-        <div>
-          <div className="text-xs font-mono text-text-secondary uppercase tracking-widest mb-0.5">Activity Feed</div>
-          <div className="text-base font-medium text-text-primary">Sarah Chen · BOS ↔ LHR</div>
-        </div>
-        {running && !confirmed && (
-          <div className="flex items-center gap-1.5 text-warning text-xs font-mono">
-            <span className="pulse-dot w-1.5 h-1.5 rounded-full bg-warning inline-block" />
-            Processing
-          </div>
-        )}
-        {confirmed && (
-          <div className="flex items-center gap-1.5 text-success text-xs font-mono fade-in">
-            <span className="w-1.5 h-1.5 rounded-full bg-success inline-block" />
-            Confirmed
-          </div>
-        )}
-      </div>
+<!-- ── TECHNICAL ── -->
+<div class="section" id="technical">
+  <p class="section-label">Technical Depth</p>
+  <h2>Architecture &amp; AI Governance</h2>
+  <p class="section-sub">For engineers and technical leaders who want to go deeper</p>
 
-      <div className="flex-1 overflow-y-auto scrollbar-thin px-5 py-3">
-        {messages.length === 0 && (
-          <div className="text-text-secondary text-sm text-center mt-16 opacity-50">
-            Press <span className="font-mono text-xs bg-slate-800 px-1.5 py-0.5 rounded">Run Demo</span> to begin
-          </div>
-        )}
-        {messages.map((msg, i) => <S1FeedMessage key={i} msg={msg} />)}
-        {confirmed && (
-          <div className="msg-enter mt-2 py-3 border-b border-slate-800">
-            <div className="flex items-start gap-1 flex-wrap">
-              <Tag type="veyant" />
-              <span className="text-sm text-text-primary">Changes confirmed. Calendar updated. Sarah, your trip is set.</span>
-            </div>
-          </div>
-        )}
-        <div ref={bottomRef} />
-      </div>
+  <p>These two documents represent the technical thinking behind Veyant. The first covers the system architecture. The second is original thinking on a problem most AI teams get wrong.</p>
 
-      {confirmed && (
-        <div className="px-5 py-3 border-t border-card-border fade-in">
-          <div className="text-xs text-text-secondary">
-            Resolved in <span className="text-success font-medium">~90 seconds</span>{' '}
-            vs estimated <span className="text-text-primary font-medium">35 minutes</span> manually
-          </div>
-        </div>
-      )}
+  <div class="tech-docs">
+    <div class="tech-card">
+      <div class="tech-card-icon">⚙️</div>
+      <p class="tech-card-title">Agentic GraphQL Mesh Architecture</p>
+      <p class="tech-card-desc">Why sequential MCP tool calls fail at scale (2.5 seconds, 6 roundtrips) and how a parallel GraphQL mesh solves it (800ms, 1 roundtrip). Covers Brain/Hand/Muscle separation of concerns, Azure PaaS layer design, Three-Cube schema federation, and field-level security.</p>
+      <a class="cta cta-ghost" href="docs/veyant-architecture.pdf" target="_blank" style="margin-top:0; padding:8px 16px; font-size:0.82rem;">View architecture &rarr;</a>
     </div>
-  );
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// SCENARIO 1 — Right Panel
-// ─────────────────────────────────────────────────────────────────────────────
-function S1CurrentTrip({ crossed }) {
-  const rowCls = crossed ? 'strikethrough text-text-secondary' : 'text-text-primary';
-  return (
-    <div className={`space-y-4 transition-all duration-500 ${crossed ? 'opacity-40' : ''}`}>
-      <div className="text-xs font-mono text-text-secondary uppercase tracking-widest mb-3">Current Itinerary</div>
-      <div className="option-card rounded-xl p-4 bg-slate-900/60">
-        <div className="flex items-center justify-between mb-2">
-          <span className="text-xs font-mono text-text-secondary">OUTBOUND</span>
-          <span className="text-xs text-text-secondary">Sat Sept 14</span>
-        </div>
-        <div className={`font-medium text-sm ${rowCls}`}>BA 173 · BOS → LHR</div>
-        <div className="text-xs text-text-secondary mt-1">9:15 PM · Seat 12A · Premium Economy</div>
-      </div>
-      <div className={`option-card rounded-xl p-4 bg-slate-900/60 ${crossed ? 'border-red-900/40' : ''}`}>
-        <div className="flex items-center justify-between mb-2">
-          <span className="text-xs font-mono text-text-secondary">RETURN</span>
-          <span className={`text-xs ${crossed ? 'text-red-400' : 'text-text-secondary'}`}>
-            {crossed ? '⚠ Needs change' : 'Tue Sept 17'}
-          </span>
-        </div>
-        <div className={`font-medium text-sm ${rowCls}`}>BA 178 · LHR → BOS</div>
-        <div className="text-xs text-text-secondary mt-1">11:10 AM · Seat 32A Window</div>
-      </div>
-      <div className={`option-card rounded-xl p-4 bg-slate-900/60 ${crossed ? 'border-red-900/40' : ''}`}>
-        <div className="flex items-center justify-between mb-2">
-          <span className="text-xs font-mono text-text-secondary">HOTEL</span>
-          <span className={`text-xs ${crossed ? 'text-red-400' : 'text-text-secondary'}`}>
-            {crossed ? '⚠ Check-out conflict' : 'Sept 14–17'}
-          </span>
-        </div>
-        <div className={`font-medium text-sm ${rowCls}`}>Marriott London Park Lane</div>
-        <div className="text-xs text-text-secondary mt-1">$385/night · 3 nights · Platinum benefits</div>
-      </div>
+    <div class="tech-card">
+      <div class="tech-card-icon">🛡️</div>
+      <p class="tech-card-title">Universal AI Guardrails Framework</p>
+      <p class="tech-card-desc">Most companies try to solve AI safety through model training. This framework argues guardrails are infrastructure, not training — and documents the specific failure patterns that emerge when AI books travel without programmatic policy access. Includes schema examples and adversarial test cases.</p>
+      <a class="cta cta-ghost" href="docs/veyant-guardrails.pdf" target="_blank" style="margin-top:0; padding:8px 16px; font-size:0.82rem;">View framework &rarr;</a>
     </div>
-  );
-}
+  </div>
+</div>
 
-function S1RecommendedChanges({ onApprove, approved }) {
-  const [selected, setSelected] = useState('A');
-  return (
-    <div className="card-slide space-y-4">
-      <div className="text-xs font-mono text-text-secondary uppercase tracking-widest mb-1">Recommended Changes</div>
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-inner">
+    <p>Seth Horowitz &nbsp;·&nbsp; Travel Technology Leader &nbsp;·&nbsp; Salt Lake City, UT</p>
+    <p style="margin-top: 8px;">
+      <a href="mailto:seth.horowitz@veyant.ai">seth.horowitz@veyant.ai</a>
+      &nbsp;·&nbsp;
+      <a href="https://linkedin.com/in/sethahorowitz" target="_blank">LinkedIn</a>
+      &nbsp;·&nbsp;
+      <a href="https://iterativelivings.com" target="_blank">iterativelivings.com</a>
+    </p>
+    <p style="margin-top: 16px; color: var(--label); font-size: 0.78rem;">
+      Open to senior product, strategy, or BD roles in travel technology &nbsp;·&nbsp; March 2026
+    </p>
+  </div>
+</footer>
 
-      {/* Option A */}
-      <div className={`option-card recommended rounded-xl p-4 cursor-pointer transition-all ${selected === 'A' ? 'bg-blue-950/40' : 'bg-slate-900/60'}`}
-           onClick={() => !approved && setSelected('A')}>
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-semibold text-brand font-mono">OPTION A</span>
-            <span className="text-xs bg-blue-950 text-blue-300 border border-blue-800 rounded px-2 py-0.5">Recommended</span>
-          </div>
-          {selected === 'A' && !approved && (
-            <span className="w-4 h-4 rounded-full bg-brand flex items-center justify-center">
-              <span className="w-2 h-2 rounded-full bg-white inline-block" />
-            </span>
-          )}
-          {approved && selected === 'A' && <span className="text-xs text-success font-mono">✓ Confirmed</span>}
-        </div>
-
-        <div className={`rounded-lg p-3 mb-2 ${approved ? 'confirmed-badge' : 'bg-slate-800/60'}`}>
-          <div className="flex justify-between items-start">
-            <div>
-              <div className="text-sm font-medium text-text-primary">BA 178 · LHR → BOS</div>
-              <div className="text-xs text-text-secondary mt-0.5">Wed Sept 18 · 11:10 AM · Seat 32A Window ✓</div>
-            </div>
-            {approved && <span className="text-success text-xs">✓</span>}
-          </div>
-          <div className="flex items-center gap-1.5 mt-2">
-            <span className="text-xs text-success font-mono">Change fee: $0</span>
-            <span className="text-text-secondary text-xs">·</span>
-            <span className="text-xs text-text-secondary">British Airways Club Gold waiver</span>
-          </div>
-        </div>
-
-        <div className={`rounded-lg p-3 mb-2 ${approved ? 'confirmed-badge' : 'bg-slate-800/60'}`}>
-          <div className="flex justify-between items-start">
-            <div>
-              <div className="text-sm font-medium text-text-primary">Marriott London Park Lane</div>
-              <div className="text-xs text-text-secondary mt-0.5">Extended to Wed Sept 18 · +1 night · Upgraded room · Executive Lounge</div>
-            </div>
-            {approved && <span className="text-success text-xs">✓</span>}
-          </div>
-          <div className="flex items-center gap-1.5 mt-2 flex-wrap">
-            <span className="text-xs text-warning font-mono">$350 / night</span>
-            <span className="text-text-secondary text-xs">·</span>
-            <span className="text-xs text-success">Room upgrade applied</span>
-            <span className="text-text-secondary text-xs">·</span>
-            <span className="text-xs text-success">Executive Lounge included</span>
-          </div>
-        </div>
-
-        <div className="flex items-center justify-between mt-3 flex-wrap gap-2">
-          <span className="compliant-badge text-xs font-mono px-2.5 py-1 rounded-md">✓ POLICY COMPLIANT</span>
-          <span className="text-sm font-semibold text-success">$0 out-of-pocket</span>
-        </div>
-      </div>
-
-      {/* Option B */}
-      <div className={`option-card rounded-xl p-4 cursor-pointer transition-all ${selected === 'B' ? 'bg-slate-800' : 'bg-slate-900/40'}`}
-           onClick={() => !approved && setSelected('B')}>
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-semibold text-text-secondary font-mono">OPTION B</span>
-            <span className="text-xs text-text-secondary">Budget / Earlier</span>
-          </div>
-          {selected === 'B' && !approved && (
-            <span className="w-4 h-4 rounded-full bg-brand flex items-center justify-center">
-              <span className="w-2 h-2 rounded-full bg-white inline-block" />
-            </span>
-          )}
-        </div>
-        <div className="text-sm text-text-secondary">BA 176 · LHR → BOS · Wed Sept 18 · 7:45 AM</div>
-        <div className="text-xs text-text-secondary mt-1">Earlier departure · Middle seat only · Same hotel &amp; cost</div>
-      </div>
-
-      {!approved && (
-        <div className="fade-in pt-1">
-          <button className="approve-btn w-full text-white font-semibold py-3 rounded-xl text-sm"
-                  onClick={() => onApprove(selected)}>
-            Approve Option {selected} →
-          </button>
-          <div className="text-center mt-2">
-            <span className="text-xs text-text-secondary cursor-pointer hover:text-text-primary transition-colors">
-              Review all options
-            </span>
-          </div>
-        </div>
-      )}
-      {approved && (
-        <div className="fade-in rounded-xl p-4 bg-success/10 border border-success/30 text-center">
-          <div className="text-success font-semibold text-sm mb-1">Changes Confirmed</div>
-          <div className="text-xs text-text-secondary">Calendar synced · Confirmations sent to sarah.chen@acmecorp.com</div>
-        </div>
-      )}
-    </div>
-  );
-}
-
-function RightPanelS1({ showRec, approved, onApprove }) {
-  return (
-    <div className="flex flex-col h-full">
-      <div className="px-5 py-4 border-b border-card-border flex items-center justify-between">
-        <div>
-          <div className="text-xs font-mono text-text-secondary uppercase tracking-widest mb-0.5">Trip Cockpit</div>
-          <div className="text-base font-medium text-text-primary">London · Sept 14–18</div>
-        </div>
-        <div className="text-right hidden sm:block">
-          <div className="text-xs text-text-secondary font-mono">Acme Corp</div>
-          <div className="text-xs text-text-secondary mt-0.5">Marriott Bonvoy Platinum · BA Club Gold</div>
-        </div>
-      </div>
-      <div className="flex-1 overflow-y-auto scrollbar-thin px-5 py-4">
-        {!showRec ? (
-          <S1CurrentTrip crossed={false} />
-        ) : (
-          <div className="space-y-6">
-            <S1CurrentTrip crossed={true} />
-            <div className="border-t border-dashed border-slate-700 pt-5">
-              <S1RecommendedChanges onApprove={onApprove} approved={approved} />
-            </div>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// SCENARIO 2 — Left Panel (chat interface)
-// ─────────────────────────────────────────────────────────────────────────────
-function S2ChatItem({ item }) {
-  if (item.type === 'user_msg') {
-    return (
-      <div className="msg-enter-right flex justify-end mb-3">
-        <div>
-          <div className="bubble-user">{item.text}</div>
-          <div className="text-right text-xs text-text-secondary mt-1 mr-1" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
-            Sarah Chen
-          </div>
-        </div>
-      </div>
-    );
-  }
-  if (item.type === 'veyant_msg') {
-    return (
-      <div className="msg-enter flex justify-start mb-3">
-        <div>
-          <div className="text-xs font-mono text-text-secondary mb-1.5 ml-1 flex items-center gap-1.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-brand inline-block" />
-            Veyant
-          </div>
-          <div className="bubble-veyant">{item.text}</div>
-        </div>
-      </div>
-    );
-  }
-  if (item.type === 'brain' || item.type === 'bridge') {
-    return (
-      <div className="msg-enter process-row mb-1">
-        <Tag type={item.type} />
-        <span className="text-xs text-text-secondary leading-relaxed"
-              style={{ fontFamily: "'JetBrains Mono', monospace" }}>
-          {item.text}
-        </span>
-      </div>
-    );
-  }
-  return null;
-}
-
-function LeftPanelS2({ items, running, confirmed, onSend, inputText, setInputText, chatSent }) {
-  const bottomRef = useRef(null);
-  useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [items, confirmed]);
-
-  return (
-    <div className="flex flex-col h-full">
-      <div className="px-5 py-4 border-b border-card-border flex items-center justify-between">
-        <div>
-          <div className="text-xs font-mono text-text-secondary uppercase tracking-widest mb-0.5">Chat</div>
-          <div className="text-base font-medium text-text-primary">Sarah Chen · NYC Stopover</div>
-        </div>
-        {running && !confirmed && (
-          <div className="flex items-center gap-1.5 text-warning text-xs font-mono">
-            <span className="pulse-dot w-1.5 h-1.5 rounded-full bg-warning inline-block" />
-            Processing
-          </div>
-        )}
-        {confirmed && (
-          <div className="flex items-center gap-1.5 text-success text-xs font-mono fade-in">
-            <span className="w-1.5 h-1.5 rounded-full bg-success inline-block" />
-            Confirmed
-          </div>
-        )}
-      </div>
-
-      <div className="flex-1 overflow-y-auto scrollbar-thin px-4 py-4">
-        {items.length === 0 && (
-          <div className="text-text-secondary text-sm text-center mt-12 opacity-50 px-4">
-            Edit or send the pre-filled message below to begin
-          </div>
-        )}
-        {items.map((item, i) => <S2ChatItem key={i} item={item} />)}
-        {confirmed && (
-          <div className="msg-enter flex justify-start mb-3">
-            <div>
-              <div className="text-xs font-mono text-text-secondary mb-1.5 ml-1 flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-success inline-block" />
-                Veyant
-              </div>
-              <div className="bubble-veyant">All changes confirmed. Calendar updated. Safe travels, Sarah.</div>
-            </div>
-          </div>
-        )}
-        <div ref={bottomRef} />
-      </div>
-
-      {confirmed && (
-        <div className="px-5 py-3 border-t border-card-border fade-in">
-          <div className="text-xs text-text-secondary">
-            4 changes completed in <span className="text-success font-medium">~90 seconds</span>.{' '}
-            Estimated manual time: <span className="text-text-primary font-medium">45+ minutes</span>.
-          </div>
-        </div>
-      )}
-
-      {/* Chat input — shown until message is sent */}
-      {!chatSent && !confirmed && (
-        <div className="px-4 pb-4 pt-3 border-t border-card-border flex-shrink-0">
-          <div className="flex items-center gap-2 mb-1.5">
-            <div className="w-5 h-5 rounded-full bg-brand/20 border border-brand/40 flex items-center justify-center flex-shrink-0">
-              <span className="text-xs text-blue-300 font-semibold" style={{ fontSize: 9 }}>SC</span>
-            </div>
-            <span className="text-xs text-text-secondary font-mono">Sarah Chen</span>
-          </div>
-          <div className="relative">
-            <textarea
-              value={inputText}
-              onChange={e => setInputText(e.target.value)}
-              onKeyDown={e => {
-                if (e.key === 'Enter' && !e.shiftKey) {
-                  e.preventDefault();
-                  if (inputText.trim()) onSend(inputText.trim());
-                }
-              }}
-              rows={3}
-              className="w-full rounded-xl px-4 py-3 pr-11 text-sm text-text-primary resize-none focus:outline-none transition-colors"
-              style={{
-                background: '#0f172a',
-                border: '1px solid #334155',
-                fontFamily: "'DM Sans', sans-serif",
-                lineHeight: '1.5',
-              }}
-              onFocus={e => e.target.style.borderColor = '#2563EB'}
-              onBlur={e => e.target.style.borderColor = '#334155'}
-            />
-            <button
-              onClick={() => { if (inputText.trim()) onSend(inputText.trim()); }}
-              disabled={!inputText.trim()}
-              title="Send (Enter)"
-              className="absolute right-2.5 bottom-2.5 w-7 h-7 rounded-lg flex items-center justify-center transition-all"
-              style={{ background: inputText.trim() ? '#2563EB' : '#1e293b', cursor: inputText.trim() ? 'pointer' : 'default' }}
-            >
-              <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
-                <path d="M1.5 6.5H11.5M11.5 6.5L7 2M11.5 6.5L7 11" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </button>
-          </div>
-          <div className="text-xs text-text-secondary mt-1.5 opacity-50">Enter to send · Shift+Enter for new line</div>
-        </div>
-      )}
-    </div>
-  );
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// SCENARIO 2 — Right Panel (4-card modified itinerary)
-// ─────────────────────────────────────────────────────────────────────────────
-function TripCard({ label, date, title, subtitle, details, compliant, confirmed, extra }) {
-  return (
-    <div className={`trip-card card-slide ${confirmed ? 'confirmed' : ''}`}>
-      <div className="flex items-center justify-between mb-2">
-        <div className="flex items-center gap-2">
-          <span className="text-xs font-mono text-text-secondary">{label}</span>
-          {compliant && (
-            <span className="compliant-badge text-xs font-mono px-2 py-0.5 rounded">✓ COMPLIANT</span>
-          )}
-        </div>
-        <div className="flex items-center gap-2">
-          <span className="text-xs text-text-secondary">{date}</span>
-          {confirmed && <span className="text-success text-xs font-mono">✓</span>}
-        </div>
-      </div>
-      <div className="text-sm font-medium text-text-primary mb-1">{title}</div>
-      <div className="text-xs text-text-secondary mb-2">{subtitle}</div>
-      {details && details.map((d, i) => (
-        <div key={i} className="flex items-center gap-1.5 flex-wrap mt-1">
-          <span className={`text-xs font-mono ${d.color || 'text-text-secondary'}`}>{d.text}</span>
-          {i < details.length - 1 && <span className="text-text-secondary text-xs">·</span>}
-        </div>
-      ))}
-      {extra && <div className="mt-2 text-xs text-text-secondary">{extra}</div>}
-    </div>
-  );
-}
-
-function S2Cockpit({ showRec, showApprove, approved, onApprove }) {
-  const pending = showRec && !approved;
-  const headerLabel = !showRec ? 'Trip Cockpit' : (approved ? 'Confirmed Itinerary' : 'Modified Itinerary · Pending Approval');
-
-  return (
-    <div className="flex flex-col h-full">
-      <div className="px-5 py-4 border-b border-card-border flex items-center justify-between">
-        <div>
-          <div className="text-xs font-mono text-text-secondary uppercase tracking-widest mb-0.5">Trip Cockpit</div>
-          <div className={`text-base font-medium ${pending ? 'text-warning' : 'text-text-primary'}`}>
-            {headerLabel}
-          </div>
-        </div>
-        <div className="text-right hidden sm:block">
-          <div className="text-xs text-text-secondary font-mono">Acme Corp</div>
-          <div className="text-xs text-text-secondary mt-0.5">Marriott Bonvoy Platinum · SkyTeam Platinum Elite</div>
-        </div>
-      </div>
-
-      <div className="flex-1 overflow-y-auto scrollbar-thin px-5 py-4 space-y-3">
-        {!showRec ? (
-          // Pre-demo: show original itinerary
-          <div className="space-y-3">
-            <div className="text-xs font-mono text-text-secondary uppercase tracking-widest mb-2">Current Itinerary</div>
-            <div className="trip-card">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-xs font-mono text-text-secondary">OUTBOUND</span>
-                <span className="text-xs text-text-secondary">Sat Sept 14</span>
-              </div>
-              <div className="text-sm font-medium text-text-primary">BA 173 · BOS → LHR</div>
-              <div className="text-xs text-text-secondary mt-1">9:15 PM · Seat 12A · Premium Economy</div>
-            </div>
-            <div className="trip-card">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-xs font-mono text-text-secondary">RETURN</span>
-                <span className="text-xs text-text-secondary">Tue Sept 17</span>
-              </div>
-              <div className="text-sm font-medium text-text-primary">BA 178 · LHR → BOS</div>
-              <div className="text-xs text-text-secondary mt-1">11:10 AM · Seat 32A Window</div>
-            </div>
-            <div className="trip-card">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-xs font-mono text-text-secondary">HOTEL</span>
-                <span className="text-xs text-text-secondary">Sept 14–17</span>
-              </div>
-              <div className="text-sm font-medium text-text-primary">Marriott London Park Lane</div>
-              <div className="text-xs text-text-secondary mt-1">$385/night · 3 nights · Platinum benefits</div>
-            </div>
-          </div>
-        ) : (
-          <div className="space-y-3">
-            {/* Crossed-out originals */}
-            <div className="opacity-35 space-y-2 mb-1">
-              <div className="text-xs font-mono text-text-secondary uppercase tracking-widest">Original (replaced)</div>
-              <div className="trip-card" style={{ borderColor: '#450a0a' }}>
-                <div className="text-xs text-text-secondary font-mono mb-1">ORIGINAL RETURN</div>
-                <div className="strikethrough text-sm text-text-secondary">BA 178 · LHR → BOS · Tue Sept 17 · 11:10 AM</div>
-              </div>
-              <div className="trip-card" style={{ borderColor: '#450a0a' }}>
-                <div className="text-xs text-text-secondary font-mono mb-1">ORIGINAL HOTEL CHECK-OUT</div>
-                <div className="strikethrough text-sm text-text-secondary">Marriott London Park Lane · Check-out Tue Sept 17</div>
-              </div>
-            </div>
-
-            <div className="border-t border-dashed border-slate-700 pt-3">
-              <div className="text-xs font-mono text-text-secondary uppercase tracking-widest mb-3">New Itinerary</div>
-            </div>
-
-            {/* Card 1 */}
-            <TripCard
-              label="1 OF 4 · LONDON EXTENSION"
-              date="Wed Sept 18"
-              title="Marriott London Park Lane"
-              subtitle="Extended to Wed Sept 18 · Same room confirmed · Executive Lounge"
-              details={[
-                { text: '$385 / night', color: 'text-warning' },
-                { text: 'Corporate rate applied', color: 'text-text-secondary' },
-              ]}
-              compliant
-              confirmed={approved}
-            />
-
-            {/* Card 2 */}
-            <TripCard
-              label="2 OF 4 · LONDON → NEW YORK"
-              date="Wed Sept 18"
-              title="DL 401 · LHR → JFK"
-              subtitle="10:15 AM · Business Class · Seat 3A Window · LHR T2 Lounge"
-              details={[
-                { text: '25,000 SkyTeam miles upgrade', color: 'text-warning' },
-                { text: '59,200 miles remaining', color: 'text-text-secondary' },
-              ]}
-              extra="LHR Terminal 2 lounge access · Platinum benefit · No charge"
-              compliant
-              confirmed={approved}
-            />
-
-            {/* Card 3 */}
-            <TripCard
-              label="3 OF 4 · NYC OVERNIGHT"
-              date="Thu Sept 19"
-              title="Marriott New York Midtown"
-              subtitle="1 night · Corporate rate · Platinum benefits applied"
-              details={[
-                { text: '$289 / night', color: 'text-warning' },
-                { text: 'Within policy', color: 'text-success' },
-              ]}
-              compliant
-              confirmed={approved}
-            />
-
-            {/* Card 4 */}
-            <TripCard
-              label="4 OF 4 · NEW YORK → BOSTON"
-              date="Thu Sept 19"
-              title="AA 87 · JFK → BOS"
-              subtitle="6:30 PM · Seat 2A · First Class · Non-stop · Complimentary upgrade"
-              details={[
-                { text: '$187', color: 'text-warning' },
-                { text: 'Upgrade: $0 (BA Club Gold / oneworld)', color: 'text-success' },
-                ...(approved ? [{ text: 'JFK T8 Lounge ✓', color: 'text-success' }, { text: 'Overweight bag prepaid ✓', color: 'text-success' }] : []),
-              ]}
-              confirmed={approved}
-            />
-
-            {/* Cost Summary */}
-            <div className={`card-slide rounded-xl p-4 border ${approved ? 'border-success/30 bg-success/5' : 'border-slate-700 bg-slate-900/60'}`}>
-              <div className="text-xs font-mono text-text-secondary uppercase tracking-widest mb-3">Cost Summary</div>
-              <div className="space-y-1.5">
-                {[
-                  ['London hotel extra night', '$385', 'policy approved'],
-                  ['LHR–EWR fare difference', '$0', 'miles upgrade'],
-                  ['NYC hotel', '$289', 'within policy'],
-                  ['JFK–BOS', '$187', ''],
-                  ...(approved ? [['JFK lounge + overweight bag', 'Discounted', 'saved $47 via Platinum']] : []),
-                ].map(([label, amount, note], i) => (
-                  <div key={i} className="flex items-center justify-between text-xs">
-                    <span className="text-text-secondary">{label}</span>
-                    <div className="flex items-center gap-2">
-                      {note && <span className="text-text-secondary opacity-60">{note}</span>}
-                      <span className="text-text-primary font-mono font-medium">{amount}</span>
-                    </div>
-                  </div>
-                ))}
-                <div className="border-t border-slate-700 pt-2 mt-2 flex items-center justify-between">
-                  <span className="text-sm font-medium text-text-primary">Total additional</span>
-                  <span className="text-sm font-semibold text-warning font-mono">$861</span>
-                </div>
-              </div>
-              <div className="mt-3 flex items-center gap-2">
-                <span className="compliant-badge text-xs font-mono px-2.5 py-1 rounded-md">✓ APPROVED</span>
-                <span className="text-xs text-text-secondary">Within Acme Corp single-trip threshold</span>
-              </div>
-            </div>
-
-            {/* Approve CTA */}
-            {showApprove && !approved && (
-              <div className="fade-in pt-1 space-y-2">
-                <button className="approve-btn w-full text-white font-semibold py-3 rounded-xl text-sm"
-                        onClick={onApprove}>
-                  Approve All Changes →
-                </button>
-                <div className="text-center">
-                  <span className="text-xs text-text-secondary cursor-pointer hover:text-text-primary transition-colors">
-                    Make a change
-                  </span>
-                </div>
-              </div>
-            )}
-
-            {approved && (
-              <div className="fade-in rounded-xl p-4 bg-success/10 border border-success/30 text-center">
-                <div className="text-success font-semibold text-sm mb-1">All Changes Confirmed</div>
-                <div className="text-xs text-text-secondary">Calendar synced · Confirmations sent · Lounge &amp; bag prepaid</div>
-              </div>
-            )}
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// MAIN APP
-// ─────────────────────────────────────────────────────────────────────────────
-function App() {
-  const [scenario, setScenario] = useState(1);
-  const [mobilePanel, setMobilePanel] = useState('left');
-
-  // S1 state
-  const [s1Messages, setS1Messages] = useState([]);
-  const [s1ShowRec, setS1ShowRec] = useState(false);
-  const [s1Approved, setS1Approved] = useState(false);
-
-  // S2 state
-  const [s2Items, setS2Items] = useState([]);
-  const [s2ShowRec, setS2ShowRec] = useState(false);
-  const [s2ShowApprove, setS2ShowApprove] = useState(false);
-  const [s2Approved, setS2Approved] = useState(false);
-  const [s2InputText, setS2InputText] = useState(S2_PREFILL);
-  const [s2ChatSent, setS2ChatSent] = useState(false);
-
-  const [running, setRunning] = useState(false);
-  const [done, setDone] = useState(false);
-  const timersRef = useRef([]);
-
-  // Auto-switch to cockpit panel on mobile when recommendations appear
-  useEffect(() => { if (s1ShowRec) setMobilePanel('right'); }, [s1ShowRec]);
-  useEffect(() => { if (s2ShowRec) setMobilePanel('right'); }, [s2ShowRec]);
-
-  const clearTimers = () => {
-    timersRef.current.forEach(t => clearTimeout(t));
-    timersRef.current = [];
-  };
-
-  const resetAll = () => {
-    clearTimers();
-    setS1Messages([]); setS1ShowRec(false); setS1Approved(false);
-    setS2Items([]); setS2ShowRec(false); setS2ShowApprove(false); setS2Approved(false);
-    setS2InputText(S2_PREFILL); setS2ChatSent(false);
-    setRunning(false); setDone(false);
-  };
-
-  const switchScenario = (s) => { resetAll(); setScenario(s); setMobilePanel('left'); };
-
-  // S2: fires when Sarah sends her message (typed or auto via Run Demo)
-  const handleS2Send = (text) => {
-    if (s2ChatSent) return;
-    setS2ChatSent(true);
-    setS2Items([{ type: 'user_msg', text }]);
-    setRunning(true);
-    S2_STEPS_AFTER_SEND.forEach(step => {
-      const t = setTimeout(() => {
-        if (step.type === 'show_rec2')          { setS2ShowRec(true); }
-        else if (step.type === 'show_approve2') { setS2ShowApprove(true); setRunning(false); }
-        else                                    { setS2Items(prev => [...prev, step]); }
-      }, step.delay);
-      timersRef.current.push(t);
-    });
-  };
-
-  const runDemo = () => {
-    resetAll();
-    setTimeout(() => {
-      if (scenario === 1) {
-        setRunning(true);
-        S1_STEPS.forEach(step => {
-          const t = setTimeout(() => {
-            if (step.type === 'show_rec') { setS1ShowRec(true); }
-            else { setS1Messages(prev => [...prev, step]); }
-          }, step.delay);
-          timersRef.current.push(t);
-        });
-        const t = setTimeout(() => setRunning(false), S1_STEPS[S1_STEPS.length - 1].delay + 600);
-        timersRef.current.push(t);
-      } else {
-        handleS2Send(S2_PREFILL);
-      }
-    }, 50);
-  };
-
-  const approved = scenario === 1 ? s1Approved : s2Approved;
-
-  return (
-    <div className="min-h-screen bg-shell flex flex-col" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-      {/* Nav */}
-      <nav className="border-b border-card-border px-4 md:px-6 py-2.5 flex-shrink-0">
-        {/* Row 1: logo + run controls */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-lg bg-brand flex items-center justify-center flex-shrink-0">
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                <path d="M7 1L12 4V10L7 13L2 10V4L7 1Z" stroke="white" strokeWidth="1.5" fill="none"/>
-                <circle cx="7" cy="7" r="2" fill="white"/>
-              </svg>
-            </div>
-            <span className="text-text-primary font-semibold text-base tracking-tight">Veyant</span>
-            <span className="text-text-secondary text-xs font-mono border border-slate-700 rounded px-2 py-0.5 hidden sm:inline">AI Travel Orchestration</span>
-          </div>
-
-          <div className="flex items-center gap-2">
-            {/* Scenario selector — desktop only in row 1 */}
-            <div className="hidden md:flex items-center gap-2 mr-2">
-              <button className={`scenario-tab ${scenario === 1 ? 'active' : 'inactive'}`}
-                      onClick={() => switchScenario(1)}>
-                S1: Calendar Alert
-              </button>
-              <button className={`scenario-tab ${scenario === 2 ? 'active' : 'inactive'}`}
-                      onClick={() => switchScenario(2)}>
-                S2: Chat Request
-              </button>
-            </div>
-
-            {/* Run controls */}
-            {(running || done) && !approved && (
-              <button onClick={resetAll}
-                      className="text-xs text-text-secondary hover:text-text-primary border border-slate-700 rounded-lg px-3 py-1.5 transition-colors">
-                Reset
-              </button>
-            )}
-            <button onClick={runDemo} disabled={running}
-                    className="text-sm font-medium px-4 py-1.5 rounded-lg transition-all"
-                    style={{
-                      background: running ? '#334155' : 'linear-gradient(135deg, #2563EB 0%, #1d4ed8 100%)',
-                      color: running ? '#64748b' : 'white',
-                      cursor: running ? 'not-allowed' : 'pointer',
-                      boxShadow: running ? 'none' : '0 0 0 1px rgba(37,99,235,0.4)',
-                    }}>
-              {running ? 'Running…' : done ? 'Run Again' : 'Run Demo'}
-            </button>
-          </div>
-        </div>
-
-        {/* Row 2: scenario selector — mobile only */}
-        <div className="flex md:hidden items-center gap-2 mt-2 pt-2 border-t border-slate-800">
-          <button className={`scenario-tab flex-1 text-center ${scenario === 1 ? 'active' : 'inactive'}`}
-                  onClick={() => switchScenario(1)}>
-            S1: Calendar Alert
-          </button>
-          <button className={`scenario-tab flex-1 text-center ${scenario === 2 ? 'active' : 'inactive'}`}
-                  onClick={() => switchScenario(2)}>
-            S2: Chat Request
-          </button>
-        </div>
-      </nav>
-
-      {/* Mobile panel toggle tab bar — hidden on md+ */}
-      <div className="flex md:hidden border-b border-card-border flex-shrink-0 bg-card">
-        <button
-          className={`mobile-tab ${mobilePanel === 'left' ? 'active' : 'inactive'}`}
-          onClick={() => setMobilePanel('left')}>
-          {scenario === 1 ? 'ACTIVITY FEED' : 'CHAT'}
-        </button>
-        <button
-          className={`mobile-tab ${mobilePanel === 'right' ? 'active' : 'inactive'}`}
-          onClick={() => setMobilePanel('right')}>
-          TRIP COCKPIT
-        </button>
-      </div>
-
-      {/* Two-panel layout */}
-      <div className="flex flex-col md:flex-row flex-1 overflow-hidden">
-        {/* Left */}
-        <div className={`md:w-5/12 border-card-border bg-card overflow-hidden flex-col
-                         md:border-r md:flex
-                         ${mobilePanel === 'left' ? 'flex flex-1' : 'hidden'}`}>
-          {scenario === 1
-            ? <LeftPanelS1 messages={s1Messages} running={running} confirmed={s1Approved} />
-            : <LeftPanelS2 items={s2Items} running={running} confirmed={s2Approved}
-                           onSend={handleS2Send} inputText={s2InputText}
-                           setInputText={setS2InputText} chatSent={s2ChatSent} />
-          }
-        </div>
-        {/* Right */}
-        <div className={`md:w-7/12 bg-shell overflow-hidden flex-col
-                         md:flex
-                         ${mobilePanel === 'right' ? 'flex flex-1' : 'hidden'}`}>
-          {scenario === 1
-            ? <RightPanelS1 showRec={s1ShowRec} approved={s1Approved}
-                            onApprove={() => { setS1Approved(true); setDone(true); }} />
-            : <S2Cockpit showRec={s2ShowRec} showApprove={s2ShowApprove} approved={s2Approved}
-                         onApprove={() => { setS2Approved(true); setDone(true); }} />
-          }
-        </div>
-      </div>
-    </div>
-  );
-}
-
-ReactDOM.createRoot(document.getElementById('root')).render(<App />);
-</script>
 </body>
 </html>
