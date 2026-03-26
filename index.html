@@ -371,23 +371,30 @@
 <!-- ── NAV ── -->
 <nav>
   <div class="nav-inner">
-    <span class="nav-name">Seth Horowitz</span>
+    <a href="#" class="nav-name" style="text-decoration: none; color: inherit;">Seth Horowitz</a>
     <ul class="nav-links">
       <li><a href="#article">Article</a></li>
       <li><a href="#veyant">Veyant</a></li>
       <li><a href="#demo">Demo</a></li>
       <li><a href="#mcp">MCP Server</a></li>
+      <li><a href="#arch">Depth</a></li>
     </ul>
   </div>
 </nav>
 
 <!-- ── HERO ── -->
 <div class="hero">
-  <p class="hero-eyebrow">Travel Technology &nbsp;·&nbsp; Product &amp; AI &nbsp;·&nbsp; Salt Lake City, UT</p>
-  <h1><strong>Seth Horowitz</strong></h1>
-  <p class="hero-tagline">Twenty years inside the systems that run the travel industry. A published thesis on where AI changes everything, and five months of active startup work to test it. Looking for the right team to build it at scale.</p>
+  <div style="display: flex; align-items: center; gap: 24px; margin-bottom: 8px;">
+    <img src="img/Seth%20casual%20profile%20pic.jpg" alt="Seth Horowitz" style="width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 3px solid var(--border);" />
+    <div>
+      <p class="hero-eyebrow" style="margin-bottom: 6px;">Travel Technology &nbsp;·&nbsp; Product &amp; AI &nbsp;·&nbsp; Salt Lake City, UT</p>
+      <h1 style="margin-bottom: 0;"><strong>Seth Horowitz</strong></h1>
+    </div>
+  </div>
+  <p class="hero-tagline">Twenty years inside the systems that run the travel industry. A published thesis on where AI changes everything, and five months of independent work mapping what it would take to build it. Looking for the right team already in motion.</p>
+  <p style="font-size: 0.85rem; color: var(--muted); margin-top: 8px;">Below: a published article, working code, technical depth, and the pitch deck behind it all.</p>
   <div class="hero-contact">
-    <span>seth.horowitz@veyant.ai</span>
+    <span>seth@veyant.ai</span>
     <span>·</span>
     <a href="https://linkedin.com/in/sethahorowitz" target="_blank">LinkedIn</a>
     <span>·</span>
@@ -418,7 +425,11 @@
 
   <p>On a flight from Singapore to LAX in 2023, I watched a plane full of exhausted travelers fumble with apps trying to book ground transportation after midnight. Each one solving the same problem alone. I sketched a concept on a napkin: what if one trusted data layer knew your preferences, your loyalty status, your calendar, and could act on your behalf? I called it My Travel Data Cube.</p>
 
-  <p>The article traces my career from witnessing my parents book a trip at Hunt Travel in Poughkeepsie in the 1980s, to working Continental Airlines reservation lines, to helping build the PSS systems used by 60+ airlines at Navitaire. It maps every wave of travel technology and makes the case that the next one is not a better search interface — it is the elimination of search entirely.</p>
+  <div style="background: var(--bg-alt); border: 1px solid var(--border); border-radius: 8px; padding: 20px; margin: 20px 0;">
+    <img src="img/my-data-cube-visual-diagram.webp" alt="My Travel Data Cube — Personalized Travel Intelligence Platform showing data sources, user control, AI assistance, and seamless experience across the full trip lifecycle" style="width: 100%; border-radius: 4px;" />
+  </div>
+
+  <p>The article traces my career from witnessing my parents book a trip at Hunt Travel in Poughkeepsie in the 1980s, to working Continental Airlines reservation lines, to helping build the PSS systems used by 60+ airlines at Navitaire. It maps every wave of travel technology and makes the case that the next wave is not a better search interface &mdash; it is AI that acts on your behalf.</p>
 
   <p>The article generated inbound conversations from industry colleagues and a European venture capital investor. It also answered its own question: if the technology was finally ready, why hadn't someone built this? That question became Veyant.</p>
 
@@ -431,26 +442,19 @@
 <div class="section" id="veyant">
   <p class="section-label">The Work</p>
   <h2>Veyant &nbsp;&mdash;&nbsp; AI Orchestration for Corporate Travel</h2>
-  <p class="section-sub">Active project, Oct 2025&ndash;Feb 2026 &nbsp;·&nbsp; Paused; not abandoned</p>
+  <p class="section-sub">Independent research &amp; proof-of-concept, Oct 2024&ndash;Feb 2026</p>
 
-  <p>Every travel platform makes users search. Veyant was built to eliminate search entirely — to give AI agents the infrastructure they need to not just find options, but act on them.</p>
+  <p>Every travel platform makes users search. Veyant was built to explore a different question: what if AI agents had the context and infrastructure to act on a traveler's behalf &mdash; not just find options, but book, rebook, and service entire trips?</p>
 
-  <div class="two-col">
-    <div class="problem-card">
-      <p class="card-label">The Problem</p>
-      <p class="card-title">Two structural barriers block AI in travel</p>
-      <p class="card-body">The Trust Barrier: travelers will not share data with platforms that have conflicts of interest. The Capability Barrier: nobody has built the connectivity layer to actually transact across suppliers with full policy and loyalty context.</p>
-      <p class="card-body" style="margin-top:8px;">Result: 83% of TMC tickets handled manually at $20 each. 45-minute booking battles. Zero personalization.</p>
-    </div>
-    <div class="solution-card">
-      <p class="card-label">The Concept</p>
-      <p class="card-title">Three-Cube Architecture + AI Agents</p>
-      <p class="card-body">My Travel Cube (traveler data, loyalty, preferences), Corporate Cube (policies, rates, approvals), Supplier Cube (NDC/GDS connectivity). Five AI agents working in parallel to take a natural language request to confirmed booking.</p>
-      <p class="card-body" style="margin-top:8px;">From $25/trip in 1985, to $10 in 2000, to $5 in 2020, to $2 in the AI era. The economics of getting this right are significant.</p>
-    </div>
+  <div style="background: var(--bg-alt); border: 1px solid var(--border); border-radius: 8px; padding: 20px; margin: 24px 0;">
+    <img src="img/today%20vs%20tommorow%20veyant.jpg" alt="Today: 47+ options, 15 minutes search, 30+ minutes to confirmation. Tomorrow with Veyant: Perfect match found, approve in 30 seconds." style="width: 100%; border-radius: 4px;" />
   </div>
 
-  <p>Five months of active work produced original frameworks, working architecture, a product backlog, four wireframed interfaces, a working demo built with Claude Code, and investor materials grounded in primary market research with TMC operators. The pitch deck tells the full story.</p>
+  <p>There are two things blocking AI in travel right now. First, the trust problem &mdash; travelers won't hand over their data to platforms that turn around and use it for marketing and dynamic pricing. The AI agent is blind. Second, the capability problem &mdash; nobody has built the connectivity to actually book, change, and service trips across suppliers with full loyalty and policy context. The AI agent can't execute. The travel robot is stuck.</p>
+
+  <p>Veyant's concept: three data cubes (traveler, corporate, supplier) feeding AI agents that work in parallel &mdash; from natural language request to confirmed booking. The traveler controls their data. The AI has the context to act. Result: 83% of TMC tickets currently handled manually could be automated.</p>
+
+  <p>Five months of independent work produced original frameworks, working architecture, a product backlog, four wireframed interfaces, and a working demo built with Claude Code. The pitch deck, the technical exploration, and the working code are all available below.</p>
 
   <a class="cta cta-ghost" href="docs/veyant-pitch-deck.pdf" target="_blank">
     View the pitch deck &rarr;
@@ -492,7 +496,7 @@
 <!-- ── MCP SERVER ── -->
 <div class="section" id="mcp">
   <p class="section-label">Working Code</p>
-  <h2>Veyant MCP Server &nbsp;&mdash;&nbsp; AI Travel Orchestration</h2>
+  <h2>Veyant MCP Server &nbsp;&mdash;&nbsp; Proof of Concept</h2>
   <p class="section-sub">TypeScript / Node.js / Model Context Protocol &nbsp;·&nbsp; <a href="https://github.com/skisushi/seth_portfolio" target="_blank">GitHub &rarr;</a></p>
 
   <p>Beyond the demo UI, I built a working MCP (Model Context Protocol) server that gives Claude structured access to three enterprise travel capabilities as callable tools: supplier search, traveler preference scoring, and corporate policy compliance.</p>
@@ -514,9 +518,12 @@
 
   <p>The interesting case: Delta's business cabin normally violates Acme Corp policy (economy and premium economy only approved). But the traveler used loyalty miles for the upgrade — not a fare upgrade. Same cabin, different compliance outcome. The tool handles that distinction explicitly.</p>
 
-  <p style="font-size: 0.88rem; color: var(--muted); border-left: 3px solid var(--border); padding-left: 14px; margin-top: 20px;">The MCP server is protocol-agnostic — any AI client that speaks Model Context Protocol can call these tools. This is not a Claude-specific integration. The same server could be called by any agentic system, any LLM toolchain, or any travel platform that adopts the standard.</p>
+  <div style="margin: 28px 0; background: #f9f8f6; border: 1px solid var(--border); border-radius: 10px; padding: 16px; max-width: 640px;">
+    <img src="img/MCP running in Claude Chat.jpg" alt="Veyant MCP server running in Claude — showing flight options with preference scores and policy compliance for Sarah Chen's London trip" style="width: 100%; border-radius: 6px; display: block;">
+    <p style="font-size: 0.78rem; color: var(--muted); margin: 10px 0 0; text-align: center;">Live MCP output in Claude &mdash; preference scoring, policy compliance, and actionable recommendations</p>
+  </div>
 
-  <p style="font-size: 0.88rem; color: var(--muted); border-left: 3px solid var(--border); padding-left: 14px; margin-top: 16px;">This was built collaboratively with Claude Code through iterative requirements definition — not hand-coded. The architecture and implementation emerged from that process. My role was product direction: the data model, the scenario, the policy constraints, and the vision for what a production system would look like. I consider that the relevant skill for AI product work.</p>
+  <p style="font-size: 0.88rem; color: var(--muted); border-left: 3px solid var(--border); padding-left: 14px; margin-top: 20px;">Built collaboratively with Claude Code through iterative requirements definition. My role was product direction: the data model, the scenario, the policy constraints, and the vision for what a production system would look like.</p>
 
   <div class="cta-row">
     <a class="cta cta-primary" href="https://github.com/skisushi/seth_portfolio" target="_blank">View on GitHub &rarr;</a>
@@ -524,19 +531,95 @@
   </div>
 </div>
 
+<div class="section" id="arch">
+  <p class="section-label">Product Thinking</p>
+  <h2>Technical Exploration</h2>
+  <p class="section-sub">Requirements discovery with Claude, Oct 2024&ndash;Dec 2025</p>
+
+  <p>Before writing code, I spent months exploring Veyant's technical landscape &mdash; using Claude as a brainstorming partner to stress-test ideas, map trade-offs, and define requirements. The goal wasn't to prescribe an architecture. It was to learn enough to ask the right questions, frame the right constraints, and give an engineering team a running start.</p>
+
+  <!-- ── ARCHITECTURE DIAGRAMS ── -->
+  <div style="margin: 32px 0;">
+
+    <!-- Data Cube Diagram -->
+    <div style="background: var(--bg-alt); border: 1px solid var(--border); border-radius: 8px; padding: 16px; max-width: 640px;">
+      <img src="img/veyant-data-cube.png" alt="Veyant Data Cube — Corporate Travel Intelligence Infrastructure" style="width: 100%; border-radius: 4px;" />
+    </div>
+
+    <!-- Brain/Hand/Muscle Diagram -->
+    <div style="background: var(--bg-alt); border: 1px solid var(--border); border-radius: 8px; padding: 24px; margin-top: 20px; max-width: 640px;">
+      <p style="font-size: 0.82rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--blue-lt); margin-bottom: 16px;">Layer Separation</p>
+      <div style="display: flex; gap: 12px;">
+        <div style="flex: 1; background: #ede9fe; border: 1px solid #c4b5fd; border-radius: 6px; padding: 14px 16px;">
+          <p style="font-size: 0.85rem; font-weight: 600; color: #5b21b6;">BRAIN</p>
+          <p style="font-size: 0.78rem; color: #7c3aed; margin-top: 2px;">AI Reasoning</p>
+          <p style="font-size: 0.75rem; color: #8b5cf6; margin-top: 6px;">What does the traveler need? What are the trade-offs?</p>
+        </div>
+        <div style="display: flex; align-items: center; color: var(--label); font-size: 0.75rem;">&rarr;</div>
+        <div style="flex: 1; background: #dbeafe; border: 1px solid #93c5fd; border-radius: 6px; padding: 14px 16px;">
+          <p style="font-size: 0.85rem; font-weight: 600; color: #1e40af;">HAND</p>
+          <p style="font-size: 0.78rem; color: #3b82f6; margin-top: 2px;">Orchestration</p>
+          <p style="font-size: 0.75rem; color: #60a5fa; margin-top: 6px;">Fetch data in parallel, enforce auth, manage caching</p>
+        </div>
+        <div style="display: flex; align-items: center; color: var(--label); font-size: 0.75rem;">&rarr;</div>
+        <div style="flex: 1; background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 6px; padding: 14px 16px;">
+          <p style="font-size: 0.85rem; font-weight: 600; color: #334155;">MUSCLE</p>
+          <p style="font-size: 0.78rem; color: #64748b; margin-top: 2px;">Backends</p>
+          <p style="font-size: 0.75rem; color: #94a3b8; margin-top: 6px;">GDS, NDC, hotel systems, supplier APIs</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 28px 0;">
+
+    <div style="background: var(--bg-alt); border: 1px solid var(--border); border-left: 3px solid var(--blue-lt); padding: 18px; border-radius: 4px;">
+      <p style="font-weight: 600; font-size: 0.92rem; margin-bottom: 6px; color: var(--text);">Three-Cube Data Architecture</p>
+      <p style="font-size: 0.84rem; color: var(--muted); line-height: 1.5;">All travel context organized into three domains &mdash; Personal (loyalty, preferences, credentials), Corporate (policies, negotiated rates, approvals), and Supplier (inventory, availability, pricing). The MCP server proof-of-concept implements all three.</p>
+    </div>
+
+    <div style="background: var(--bg-alt); border: 1px solid var(--border); border-left: 3px solid var(--blue-lt); padding: 18px; border-radius: 4px;">
+      <p style="font-weight: 600; font-size: 0.92rem; margin-bottom: 6px; color: var(--text);">Model Selection Framework</p>
+      <p style="font-size: 0.84rem; color: var(--muted); line-height: 1.5;">Not every task needs an LLM. A four-tier hierarchy &mdash; regex and rules, local ML classifiers, small LLMs, large LLMs &mdash; matches capability to task complexity. At 100K bookings/month, tiered model selection reduces inference costs by ~65%.</p>
+    </div>
+
+    <div style="background: var(--bg-alt); border: 1px solid var(--border); border-left: 3px solid var(--blue-lt); padding: 18px; border-radius: 4px;">
+      <p style="font-weight: 600; font-size: 0.92rem; margin-bottom: 6px; color: var(--text);">Guardrails as Infrastructure</p>
+      <p style="font-size: 0.84rem; color: var(--muted); line-height: 1.5;">Policy enforcement through structured, auditable tools &mdash; not prompt training. Three layers: hard pre-decision constraints, soft preference-based scoring, and post-decision compliance validation. The MCP compliance tool is a working example of this pattern.</p>
+    </div>
+
+    <div style="background: var(--bg-alt); border: 1px solid var(--border); border-left: 3px solid var(--blue-lt); padding: 18px; border-radius: 4px;">
+      <p style="font-weight: 600; font-size: 0.92rem; margin-bottom: 6px; color: var(--text);">Data Security &amp; Zero-Trust</p>
+      <p style="font-size: 0.84rem; color: var(--muted); line-height: 1.5;">Three-tier classification (credentials in HSM, PII encrypted, analytics anonymized). AI agents never touch credentials directly &mdash; a token vending service issues short-lived, scoped access tokens per transaction.</p>
+    </div>
+
+  </div>
+
+  <p style="font-size: 0.88rem; color: var(--muted); border-left: 3px solid var(--border); padding-left: 14px; margin-top: 20px;">Full transparency: these documents emerged from iterative brainstorming sessions with Claude. I brought 20 years of airline technology experience &mdash; how GDS and NDC systems actually work, what TMCs need, where the manual processes break down. Claude helped me explore technical approaches and articulate requirements in engineering terms. The industry expertise is mine. The architecture exploration was collaborative.</p>
+
+  <p style="font-size: 0.88rem; color: var(--muted); border-left: 3px solid var(--border); padding-left: 14px; margin-top: 16px;">This problem is too big for a solo founder. It needs an existing team with distribution, supplier relationships, and engineering depth. I'm looking to bring this thinking &mdash; the product vision, the domain expertise, and the ability to work at the speed of AI &mdash; to that team.</p>
+
+  <div class="cta-row">
+    <a class="cta cta-primary" href="mailto:seth@veyant.ai">Get in touch &rarr;</a>
+    <a class="cta cta-ghost" href="https://linkedin.com/in/sethahorowitz" target="_blank">LinkedIn</a>
+  </div>
+
+</div>
+
 <!-- ── FOOTER ── -->
 <footer>
   <div class="footer-inner">
     <p>Seth Horowitz &nbsp;·&nbsp; Travel Technology Leader &nbsp;·&nbsp; Salt Lake City, UT</p>
     <p style="margin-top: 8px;">
-      <a href="mailto:seth.horowitz@veyant.ai">seth.horowitz@veyant.ai</a>
+      <a href="mailto:seth@veyant.ai">seth@veyant.ai</a>
       &nbsp;·&nbsp;
       <a href="https://linkedin.com/in/sethahorowitz" target="_blank">LinkedIn</a>
       &nbsp;·&nbsp;
       <a href="https://iterativelivings.com" target="_blank">iterativelivings.com</a>
     </p>
     <p style="margin-top: 16px; color: var(--label); font-size: 0.78rem;">
-      Open to senior product, strategy, or BD roles in travel technology &nbsp;·&nbsp; March 2026
+      Open to senior product, strategy, or partnerships roles in travel &amp; AI &nbsp;·&nbsp; 2026
     </p>
   </div>
 </footer>
