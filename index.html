@@ -514,7 +514,9 @@
 
   <p>The interesting case: Delta's business cabin normally violates Acme Corp policy (economy and premium economy only approved). But the traveler used loyalty miles for the upgrade — not a fare upgrade. Same cabin, different compliance outcome. The tool handles that distinction explicitly.</p>
 
-  <p style="font-size: 0.88rem; color: var(--muted); border-left: 3px solid var(--border); padding-left: 14px; margin-top: 20px;">This was built collaboratively with Claude Code through iterative requirements definition — not hand-coded. The architecture and implementation emerged from that process. My role was product direction: the data model, the scenario, the policy constraints, and the vision for what a production system would look like. I consider that the relevant skill for AI product work.</p>
+  <p style="font-size: 0.88rem; color: var(--muted); border-left: 3px solid var(--border); padding-left: 14px; margin-top: 20px;">The MCP server is protocol-agnostic — any AI client that speaks Model Context Protocol can call these tools. This is not a Claude-specific integration. The same server could be called by any agentic system, any LLM toolchain, or any travel platform that adopts the standard.</p>
+
+  <p style="font-size: 0.88rem; color: var(--muted); border-left: 3px solid var(--border); padding-left: 14px; margin-top: 16px;">This was built collaboratively with Claude Code through iterative requirements definition — not hand-coded. The architecture and implementation emerged from that process. My role was product direction: the data model, the scenario, the policy constraints, and the vision for what a production system would look like. I consider that the relevant skill for AI product work.</p>
 
   <div class="cta-row">
     <a class="cta cta-primary" href="https://github.com/skisushi/seth_portfolio" target="_blank">View on GitHub &rarr;</a>
