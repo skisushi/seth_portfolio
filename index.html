@@ -384,6 +384,7 @@
       <li><a href="#article">Article</a></li>
       <li><a href="#veyant">Veyant</a></li>
       <li><a href="#demo">Demo</a></li>
+      <li><a href="#policy">Policy Design</a></li>
       <li><a href="#mcp">MCP Server</a></li>
       <li><a href="#arch">Depth</a></li>
     </ul>
@@ -399,12 +400,12 @@
       <h1 style="margin-bottom: 0;"><strong>Seth Horowitz</strong></h1>
     </div>
   </div>
-  <p class="hero-tagline">Twenty years inside the systems that run the travel industry. A published thesis on where AI changes everything, and five months of independent work mapping what it would take to build it. Looking for the right team already in motion.</p>
+  <p class="hero-tagline">Twenty years inside the systems that run the travel industry. A published thesis on how the right data architecture makes AI the missing link, and five months of independent work mapping what it would take to build it. Looking for the right team already in motion.</p>
   <p style="font-size: 1rem; color: var(--muted); margin-top: 12px;">Below: a published article, working code, technical depth, and the pitch deck behind it all.</p>
-  <div class="hero-contact">
-    <span>seth@veyant.ai</span>
+  <div class="hero-contact" style="margin-top: 16px; font-size: 1.05rem;">
+    <a href="mailto:seth@veyant.ai" style="color: var(--accent); text-decoration: none; font-weight: 500;">seth@veyant.ai</a>
     <span>·</span>
-    <a href="https://linkedin.com/in/sethahorowitz" target="_blank">LinkedIn</a>
+    <a href="https://linkedin.com/in/sethahorowitz" target="_blank" style="color: #0A66C2; text-decoration: none; font-weight: 500;">LinkedIn</a>
     <span>·</span>
     <span>Open to remote &amp; hybrid</span>
   </div>
@@ -498,6 +499,77 @@
   <a class="cta cta-green" href="demo/index.html" target="_blank">
     Try the demo &rarr;
   </a>
+</div>
+
+
+<!-- ── CORPORATE POLICY MANAGER ── -->
+<div class="section" id="policy">
+  <p class="section-label">Product Design</p>
+  <h2>Corporate Policy Manager</h2>
+  <p class="section-sub">Design Wireframe &nbsp;·&nbsp; Not yet built</p>
+
+  <p>The traveler demo shows what Veyant does for the person on the trip. This is the other side — the interface where a corporate travel manager sets the guardrails the AI agents enforce.</p>
+
+  <p style="margin-top:1rem;">The core design problem: travel policy today is written in documents and enforced manually. Managers input rigid rules; travelers find workarounds; exceptions pile up. The Corporate Policy Manager flips this. Instead of asking a travel manager to write rules, it asks them to describe the business outcome they want — and derives the enforceable rules from that intent. A manager types <em>"keep our United partnership healthy until we hit our Q4 volume target"</em> and the system generates route preferences, fare delta thresholds, and volume alerts automatically.</p>
+
+  <p style="margin-top:1rem;">Nine features are annotated in the wireframe: natural language policy input, objective-vs-rule mode, AI-generated derived rules, smart suggestions when rigid rules are entered, real-time compliance analytics, and conflict detection when policies contradict each other. This is a design wireframe, not a built feature — but it maps directly to the product backlog and reflects the same thinking as the MCP compliance tool below.</p>
+
+  <!-- Wireframe CTA -->
+  <div style="margin-top:2rem;">
+    <a href="wireframe_3_corporate_policy_manager.html" target="_blank"
+       class="cta cta-blue"
+       style="display:inline-flex; align-items:center; gap:8px; text-decoration:none;">
+      View wireframe &rarr;
+    </a>
+    <p style="margin-top:10px; font-size:0.78rem; color:var(--muted); font-style:italic;">
+      Opens in a new tab &nbsp;·&nbsp; Design wireframe, not a built feature
+    </p>
+  </div>
+
+  <!-- Nine features -->
+  <div style="margin-top:2rem; display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:12px;">
+    <div style="border:1px solid var(--border); border-radius:10px; padding:14px 16px;">
+      <p style="font-size:0.72rem; color:var(--blue-lt); font-weight:600; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:4px;">① Policy Categories</p>
+      <p style="font-size:0.85rem; color:var(--body);">Sidebar navigation across Air, Hotel, Ground, Approvals, Preferred Suppliers, and Compliance — each with its own rule set and compliance tracking.</p>
+    </div>
+    <div style="border:1px solid var(--border); border-radius:10px; padding:14px 16px;">
+      <p style="font-size:0.72rem; color:var(--blue-lt); font-weight:600; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:4px;">② Natural Language Input</p>
+      <p style="font-size:0.85rem; color:var(--body);">Travel managers describe the business outcome they want in plain English. The system interprets intent and derives enforceable rules automatically.</p>
+    </div>
+    <div style="border:1px solid var(--border); border-radius:10px; padding:14px 16px;">
+      <p style="font-size:0.72rem; color:var(--blue-lt); font-weight:600; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:4px;">③ Objective vs Rule Mode</p>
+      <p style="font-size:0.85rem; color:var(--body);">Toggle between high-level business intent and granular rule editing — managers can stay in objective mode or go deep when needed.</p>
+    </div>
+    <div style="border:1px solid var(--border); border-radius:10px; padding:14px 16px;">
+      <p style="font-size:0.72rem; color:var(--blue-lt); font-weight:600; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:4px;">④ Starter Templates</p>
+      <p style="font-size:0.85rem; color:var(--body);">Pre-populated best-practice policies by industry and company size. Adopt as-is, edit to fit, or ignore entirely.</p>
+    </div>
+    <div style="border:1px solid var(--border); border-radius:10px; padding:14px 16px;">
+      <p style="font-size:0.72rem; color:var(--blue-lt); font-weight:600; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:4px;">⑤ Objective Display</p>
+      <p style="font-size:0.85rem; color:var(--body);">Every rule shows the business intent behind it in natural language — so new managers can understand why a policy exists, not just what it says.</p>
+    </div>
+    <div style="border:1px solid var(--border); border-radius:10px; padding:14px 16px;">
+      <p style="font-size:0.72rem; color:var(--blue-lt); font-weight:600; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:4px;">⑥ Derived Rules</p>
+      <p style="font-size:0.85rem; color:var(--body);">AI-generated enforceable rules with specific parameters — editable by the manager if the generated defaults don't match their intent.</p>
+    </div>
+    <div style="border:1px solid var(--border); border-radius:10px; padding:14px 16px;">
+      <p style="font-size:0.72rem; color:var(--blue-lt); font-weight:600; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:4px;">⑦ AI Suggestions Panel</p>
+      <p style="font-size:0.85rem; color:var(--body);">When a manager enters an overly rigid rule, the system surfaces smarter alternatives — reducing exception volume before policies go live.</p>
+    </div>
+    <div style="border:1px solid var(--border); border-radius:10px; padding:14px 16px;">
+      <p style="font-size:0.72rem; color:var(--blue-lt); font-weight:600; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:4px;">⑧ Policy Insights</p>
+      <p style="font-size:0.85rem; color:var(--body);">Real-time compliance rates, savings tracking, and exception patterns — so managers can see whether their policies are working or creating friction.</p>
+    </div>
+    <div style="border:1px solid var(--border); border-radius:10px; padding:14px 16px;">
+      <p style="font-size:0.72rem; color:var(--blue-lt); font-weight:600; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:4px;">⑨ Conflict Detection</p>
+      <p style="font-size:0.85rem; color:var(--body);">Alerts when two policies contradict each other — e.g. a preferred supplier rule that conflicts with a cost cap — before they cause booking failures.</p>
+    </div>
+  </div>
+
+  <!-- Connecting thread -->
+  <div style="margin-top:2rem; padding:16px 20px; background:var(--bg-alt); border:1px solid var(--border); border-radius:10px; border-left:3px solid var(--blue-lt);">
+    <p style="font-size:0.88rem; color:var(--body);">The <code style="font-size:0.82rem; background:#eef2ff; color:var(--blue); padding:2px 6px; border-radius:4px;">check_policy_compliance</code> tool in the MCP server below is the runtime enforcement layer for policies configured here — deterministic, auditable, and separate from the AI reasoning layer.</p>
+  </div>
 </div>
 
 
