@@ -1,0 +1,1406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Veyant - Corporate Policy Manager Wireframe</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --veyant-blue: #2563EB;
+            --veyant-blue-light: #3B82F6;
+            --veyant-blue-dark: #1D4ED8;
+            --success-green: #10B981;
+            --warning-yellow: #F59E0B;
+            --error-red: #EF4444;
+            --neutral-gray: #6B7280;
+            --bg-light: #F8FAFC;
+            --bg-white: #FFFFFF;
+            --border-color: #E2E8F0;
+            --text-primary: #1E293B;
+            --text-secondary: #64748B;
+            --text-muted: #94A3B8;
+            --suggestion-bg: #FEF3C7;
+            --suggestion-border: #FCD34D;
+            --derived-bg: #ECFDF5;
+            --derived-border: #6EE7B7;
+            --objective-bg: #EFF6FF;
+            --objective-border: #93C5FD;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-light);
+            color: var(--text-primary);
+            line-height: 1.5;
+        }
+
+        /* Main Layout */
+        .wireframe-page {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Left Sidebar - Annotations */
+        .annotations-sidebar {
+            width: 280px;
+            background: var(--text-primary);
+            color: white;
+            padding: 24px;
+            overflow-y: auto;
+            flex-shrink: 0;
+        }
+
+        .annotations-header {
+            margin-bottom: 24px;
+        }
+
+        .annotations-header h2 {
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .annotations-header h1 {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .annotation-item {
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+
+        .annotation-item:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .annotation-item.active {
+            background: rgba(37, 99, 235, 0.3);
+            border-color: var(--veyant-blue);
+        }
+
+        .annotation-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            background: var(--veyant-blue);
+            color: white;
+            border-radius: 50%;
+            font-size: 12px;
+            font-weight: 600;
+            margin-right: 8px;
+        }
+
+        .annotation-title {
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .annotation-desc {
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        .annotation-ref {
+            font-size: 10px;
+            color: var(--veyant-blue-light);
+            margin-top: 6px;
+            font-family: monospace;
+        }
+
+        /* Main Content Area */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Top Header Bar */
+        .top-header {
+            background: var(--bg-white);
+            border-bottom: 1px solid var(--border-color);
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--veyant-blue);
+        }
+
+        .logo span {
+            color: var(--text-primary);
+        }
+
+        .nav-breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .nav-breadcrumb .current {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .company-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: var(--bg-light);
+            border-radius: 8px;
+            font-size: 13px;
+        }
+
+        .company-badge .company-icon {
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(135deg, var(--veyant-blue), var(--veyant-blue-dark));
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 12px;
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            background: var(--veyant-blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        /* Policy Manager Layout */
+        .policy-manager {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+
+        /* Categories Sidebar */
+        .categories-sidebar {
+            width: 220px;
+            background: var(--bg-white);
+            border-right: 1px solid var(--border-color);
+            padding: 20px 0;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .categories-header {
+            padding: 0 20px 16px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 8px;
+        }
+
+        .categories-header h3 {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+        }
+
+        .category-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .category-item:hover {
+            background: var(--bg-light);
+        }
+
+        .category-item.active {
+            background: var(--objective-bg);
+            border-left-color: var(--veyant-blue);
+        }
+
+        .category-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--bg-light);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .category-item.active .category-icon {
+            background: var(--veyant-blue);
+            color: white;
+        }
+
+        .category-info {
+            flex: 1;
+        }
+
+        .category-name {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .category-count {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .hotspot {
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            background: var(--veyant-blue);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.4);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* Main Policy Content */
+        .policy-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Policy Input Section */
+        .policy-input-section {
+            background: var(--bg-white);
+            border-bottom: 1px solid var(--border-color);
+            padding: 24px;
+            position: relative;
+        }
+
+        .input-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .input-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .mode-toggle {
+            display: flex;
+            background: var(--bg-light);
+            border-radius: 8px;
+            padding: 4px;
+        }
+
+        .mode-btn {
+            padding: 8px 16px;
+            border: none;
+            background: transparent;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.15s ease;
+        }
+
+        .mode-btn.active {
+            background: var(--bg-white);
+            color: var(--veyant-blue);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .natural-language-input {
+            position: relative;
+        }
+
+        .input-textarea {
+            width: 100%;
+            min-height: 80px;
+            padding: 16px;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 15px;
+            font-family: inherit;
+            resize: none;
+            transition: border-color 0.15s ease;
+        }
+
+        .input-textarea:focus {
+            outline: none;
+            border-color: var(--veyant-blue);
+        }
+
+        .input-textarea::placeholder {
+            color: var(--text-muted);
+        }
+
+        .input-actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 12px;
+        }
+
+        .input-hint {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: var(--veyant-blue);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.15s ease;
+        }
+
+        .btn-primary:hover {
+            background: var(--veyant-blue-dark);
+        }
+
+        /* Starter Policies (Gray Templates) */
+        .starter-policies {
+            margin-top: 16px;
+            padding: 16px;
+            background: var(--bg-light);
+            border-radius: 12px;
+            border: 1px dashed var(--border-color);
+        }
+
+        .starter-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .starter-header h4 {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .starter-badge {
+            font-size: 10px;
+            padding: 2px 8px;
+            background: var(--text-muted);
+            color: white;
+            border-radius: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .starter-policy {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            background: var(--bg-white);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            opacity: 0.7;
+        }
+
+        .starter-policy:hover {
+            opacity: 1;
+            border-color: var(--veyant-blue);
+        }
+
+        .starter-policy:last-child {
+            margin-bottom: 0;
+        }
+
+        .starter-icon {
+            font-size: 16px;
+        }
+
+        .starter-text {
+            flex: 1;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .starter-action {
+            font-size: 12px;
+            color: var(--veyant-blue);
+            font-weight: 500;
+        }
+
+        /* Policies List */
+        .policies-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px;
+        }
+
+        .policy-card {
+            background: var(--bg-white);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            margin-bottom: 16px;
+            overflow: hidden;
+        }
+
+        .policy-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .policy-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .status-indicator.active {
+            background: var(--success-green);
+        }
+
+        .status-indicator.pending {
+            background: var(--warning-yellow);
+        }
+
+        .policy-title {
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .policy-meta {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .policy-card-body {
+            padding: 20px;
+        }
+
+        /* Objective Block */
+        .objective-block {
+            background: var(--objective-bg);
+            border: 1px solid var(--objective-border);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+            position: relative;
+        }
+
+        .block-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--veyant-blue);
+            margin-bottom: 8px;
+        }
+
+        .objective-text {
+            font-size: 14px;
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .edit-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            padding: 4px 10px;
+            font-size: 12px;
+            color: var(--veyant-blue);
+            background: transparent;
+            border: 1px solid var(--veyant-blue);
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        /* Derived Rules Block */
+        .derived-block {
+            background: var(--derived-bg);
+            border: 1px solid var(--derived-border);
+            border-radius: 8px;
+            padding: 16px;
+            position: relative;
+        }
+
+        .derived-block .block-label {
+            color: var(--success-green);
+        }
+
+        .derived-rules {
+            list-style: none;
+        }
+
+        .derived-rule {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .derived-rule:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .rule-icon {
+            width: 20px;
+            height: 20px;
+            background: var(--success-green);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .rule-text {
+            font-size: 13px;
+            color: var(--text-primary);
+            line-height: 1.5;
+        }
+
+        .rule-param {
+            font-weight: 600;
+            color: var(--success-green);
+        }
+
+        /* AI Suggestions Panel */
+        .suggestions-sidebar {
+            width: 320px;
+            background: var(--bg-white);
+            border-left: 1px solid var(--border-color);
+            padding: 20px;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .suggestions-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .suggestions-header h3 {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .ai-badge {
+            font-size: 10px;
+            padding: 3px 8px;
+            background: linear-gradient(135deg, #8B5CF6, #6366F1);
+            color: white;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+
+        .suggestion-card {
+            background: var(--suggestion-bg);
+            border: 1px solid var(--suggestion-border);
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .suggestion-type {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--warning-yellow);
+            margin-bottom: 8px;
+        }
+
+        .suggestion-current {
+            font-size: 13px;
+            color: var(--text-secondary);
+            padding: 10px;
+            background: rgba(0,0,0,0.05);
+            border-radius: 6px;
+            margin-bottom: 12px;
+            text-decoration: line-through;
+            opacity: 0.7;
+        }
+
+        .suggestion-proposed {
+            font-size: 13px;
+            color: var(--text-primary);
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+
+        .suggestion-rationale {
+            font-size: 12px;
+            color: var(--text-muted);
+            padding-left: 12px;
+            border-left: 2px solid var(--warning-yellow);
+            margin-bottom: 12px;
+        }
+
+        .suggestion-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-accept {
+            flex: 1;
+            padding: 8px 12px;
+            font-size: 12px;
+            font-weight: 600;
+            background: var(--success-green);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .btn-dismiss {
+            padding: 8px 12px;
+            font-size: 12px;
+            font-weight: 600;
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        /* Insights Card */
+        .insights-card {
+            background: linear-gradient(135deg, #EFF6FF, #F0F9FF);
+            border: 1px solid var(--objective-border);
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .insights-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .insights-header h4 {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--veyant-blue);
+        }
+
+        .insight-stat {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(37, 99, 235, 0.1);
+        }
+
+        .insight-stat:last-child {
+            border-bottom: none;
+        }
+
+        .insight-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .insight-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .insight-value.positive {
+            color: var(--success-green);
+        }
+
+        .insight-value.warning {
+            color: var(--warning-yellow);
+        }
+
+        /* Conflict Alert */
+        .conflict-alert {
+            background: #FEF2F2;
+            border: 1px solid #FECACA;
+            border-radius: 10px;
+            padding: 16px;
+        }
+
+        .conflict-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .conflict-icon {
+            color: var(--error-red);
+            font-size: 16px;
+        }
+
+        .conflict-header h4 {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--error-red);
+        }
+
+        .conflict-desc {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+        }
+
+        .conflict-resolve {
+            padding: 8px 12px;
+            font-size: 12px;
+            font-weight: 600;
+            background: var(--error-red);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        /* Demo State Banner */
+        .demo-banner {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--text-primary);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            z-index: 1000;
+        }
+
+        .demo-label {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+        }
+
+        .demo-btn {
+            padding: 6px 14px;
+            font-size: 12px;
+            font-weight: 500;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .demo-btn:hover, .demo-btn.active {
+            background: var(--veyant-blue);
+        }
+    </style>
+</head>
+<body>
+    <div class="wireframe-page">
+        <!-- Left Annotations Sidebar -->
+        <aside class="annotations-sidebar">
+            <div class="annotations-header">
+                <h2>Wireframe 3</h2>
+                <h1>Corporate Policy Manager</h1>
+            </div>
+
+            <div class="annotation-item active" data-target="1">
+                <span class="annotation-number">1</span>
+                <div class="annotation-title">Policy Categories</div>
+                <div class="annotation-desc">Organized navigation for Air, Hotel, Ground, Approvals, Suppliers, and Compliance policies</div>
+                <div class="annotation-ref">Epic E3 / F3.1</div>
+            </div>
+
+            <div class="annotation-item" data-target="2">
+                <span class="annotation-number">2</span>
+                <div class="annotation-title">Natural Language Input</div>
+                <div class="annotation-desc">Travel managers type objectives in plain English; system interprets and structures into rules</div>
+                <div class="annotation-ref">Epic E3 / F3.2 / US3.2.1</div>
+            </div>
+
+            <div class="annotation-item" data-target="3">
+                <span class="annotation-number">3</span>
+                <div class="annotation-title">Objective vs Rule Mode</div>
+                <div class="annotation-desc">Toggle between high-level objectives and detailed rule creation</div>
+                <div class="annotation-ref">Epic E3 / F3.2 / US3.2.2</div>
+            </div>
+
+            <div class="annotation-item" data-target="4">
+                <span class="annotation-number">4</span>
+                <div class="annotation-title">Starter Templates</div>
+                <div class="annotation-desc">Pre-populated policy suggestions based on industry best practices; adopt, edit, or ignore</div>
+                <div class="annotation-ref">Epic E3 / F3.3 / US3.3.1</div>
+            </div>
+
+            <div class="annotation-item" data-target="5">
+                <span class="annotation-number">5</span>
+                <div class="annotation-title">Objective Display</div>
+                <div class="annotation-desc">Shows the business intent behind each policy in natural language</div>
+                <div class="annotation-ref">Epic E3 / F3.2 / US3.2.3</div>
+            </div>
+
+            <div class="annotation-item" data-target="6">
+                <span class="annotation-number">6</span>
+                <div class="annotation-title">Derived Rules</div>
+                <div class="annotation-desc">AI-generated enforceable rules with specific parameters, editable by travel manager</div>
+                <div class="annotation-ref">Epic E3 / F3.4 / US3.4.1</div>
+            </div>
+
+            <div class="annotation-item" data-target="7">
+                <span class="annotation-number">7</span>
+                <div class="annotation-title">AI Suggestions Panel</div>
+                <div class="annotation-desc">Smart recommendations for more nuanced policies when rigid rules are entered</div>
+                <div class="annotation-ref">Epic E3 / F3.5 / US3.5.1</div>
+            </div>
+
+            <div class="annotation-item" data-target="8">
+                <span class="annotation-number">8</span>
+                <div class="annotation-title">Policy Insights</div>
+                <div class="annotation-desc">Real-time analytics on policy compliance rates and potential savings</div>
+                <div class="annotation-ref">Epic E3 / F3.6</div>
+            </div>
+
+            <div class="annotation-item" data-target="9">
+                <span class="annotation-number">9</span>
+                <div class="annotation-title">Conflict Detection</div>
+                <div class="annotation-desc">Alerts when policies contradict each other or create unintended restrictions</div>
+                <div class="annotation-ref">Epic E3 / F3.7 / US3.7.1</div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Header -->
+            <header class="top-header">
+                <div class="header-left">
+                    <div class="logo">Veyant<span>.ai</span></div>
+                    <nav class="nav-breadcrumb">
+                        <span>Admin Console</span>
+                        <span>/</span>
+                        <span class="current">Policy Manager</span>
+                    </nav>
+                </div>
+                <div class="header-right">
+                    <div class="company-badge">
+                        <div class="company-icon">AC</div>
+                        <div>
+                            <div style="font-weight: 600; color: var(--text-primary);">Acme Corp</div>
+                            <div style="font-size: 11px; color: var(--text-muted);">Enterprise Plan</div>
+                        </div>
+                    </div>
+                    <div class="user-avatar">TM</div>
+                </div>
+            </header>
+
+            <!-- Policy Manager Layout -->
+            <div class="policy-manager">
+                <!-- Categories Sidebar -->
+                <aside class="categories-sidebar">
+                    <div class="hotspot" style="top: 60px; right: 10px;">1</div>
+                    
+                    <div class="categories-header">
+                        <h3>Policy Categories</h3>
+                    </div>
+
+                    <div class="category-item active">
+                        <div class="category-icon">&#9992;</div>
+                        <div class="category-info">
+                            <div class="category-name">Air Travel</div>
+                            <div class="category-count">4 active policies</div>
+                        </div>
+                    </div>
+
+                    <div class="category-item">
+                        <div class="category-icon">&#127976;</div>
+                        <div class="category-info">
+                            <div class="category-name">Hotel</div>
+                            <div class="category-count">3 active policies</div>
+                        </div>
+                    </div>
+
+                    <div class="category-item">
+                        <div class="category-icon">&#128663;</div>
+                        <div class="category-info">
+                            <div class="category-name">Ground Transport</div>
+                            <div class="category-count">2 active policies</div>
+                        </div>
+                    </div>
+
+                    <div class="category-item">
+                        <div class="category-icon">&#9989;</div>
+                        <div class="category-info">
+                            <div class="category-name">Approvals</div>
+                            <div class="category-count">5 active policies</div>
+                        </div>
+                    </div>
+
+                    <div class="category-item">
+                        <div class="category-icon">&#11088;</div>
+                        <div class="category-info">
+                            <div class="category-name">Preferred Suppliers</div>
+                            <div class="category-count">3 active policies</div>
+                        </div>
+                    </div>
+
+                    <div class="category-item">
+                        <div class="category-icon">&#128274;</div>
+                        <div class="category-info">
+                            <div class="category-name">Compliance</div>
+                            <div class="category-count">2 active policies</div>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- Main Policy Content -->
+                <section class="policy-content">
+                    <!-- Natural Language Input Section -->
+                    <div class="policy-input-section">
+                        <div class="hotspot" style="top: 20px; right: 350px;">2</div>
+                        <div class="hotspot" style="top: 20px; right: 100px;">3</div>
+                        
+                        <div class="input-header">
+                            <h2 class="input-title">Create or Modify Air Travel Policy</h2>
+                            <div class="mode-toggle">
+                                <button class="mode-btn active">Objective Mode</button>
+                                <button class="mode-btn">Rule Mode</button>
+                            </div>
+                        </div>
+
+                        <div class="natural-language-input">
+                            <textarea class="input-textarea" placeholder="Describe your travel policy objective in plain English...
+
+Example: &quot;Keep our United partnership healthy until we hit our Q4 volume target of 500 segments&quot;"></textarea>
+                        </div>
+
+                        <div class="input-actions">
+                            <span class="input-hint">Tip: Describe the business outcome you want, and we'll create the rules to achieve it</span>
+                            <button class="btn-primary">
+                                <span>Generate Policy</span>
+                                <span>&#10132;</span>
+                            </button>
+                        </div>
+
+                        <!-- Starter Templates -->
+                        <div class="starter-policies">
+                            <div class="hotspot" style="top: 10px; right: 10px;">4</div>
+                            
+                            <div class="starter-header">
+                                <h4>Suggested Starter Policies for Air Travel</h4>
+                                <span class="starter-badge">Templates</span>
+                            </div>
+
+                            <div class="starter-policy">
+                                <span class="starter-icon">&#128176;</span>
+                                <span class="starter-text">Limit domestic flights to economy class to control travel spend</span>
+                                <span class="starter-action">+ Add</span>
+                            </div>
+
+                            <div class="starter-policy">
+                                <span class="starter-icon">&#9200;</span>
+                                <span class="starter-text">Allow business class for international flights over 6 hours</span>
+                                <span class="starter-action">+ Add</span>
+                            </div>
+
+                            <div class="starter-policy">
+                                <span class="starter-icon">&#128203;</span>
+                                <span class="starter-text">Require 14-day advance booking for all non-urgent travel</span>
+                                <span class="starter-action">+ Add</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Policies List -->
+                    <div class="policies-list">
+                        <!-- Policy Card 1 - United Partnership -->
+                        <div class="policy-card">
+                            <div class="policy-card-header">
+                                <div class="policy-status">
+                                    <div class="status-indicator active"></div>
+                                    <span class="policy-title">United Airlines Partnership Optimization</span>
+                                </div>
+                                <div class="policy-meta">
+                                    <span>Created: Dec 1, 2024</span>
+                                    <span>|</span>
+                                    <span>Modified: Dec 10, 2024</span>
+                                </div>
+                            </div>
+                            <div class="policy-card-body">
+                                <div class="hotspot" style="top: 20px; right: 80px;">5</div>
+                                
+                                <div class="objective-block">
+                                    <div class="block-label">
+                                        <span>&#127919;</span>
+                                        Business Objective
+                                    </div>
+                                    <p class="objective-text">Keep our United partnership healthy until we hit our Q4 volume target. We need to protect the 18% discount on domestic routes and maintain Platinum status for our travelers.</p>
+                                    <button class="edit-btn">Edit</button>
+                                </div>
+
+                                <div class="hotspot" style="top: 140px; right: 80px;">6</div>
+                                
+                                <div class="derived-block">
+                                    <div class="block-label">
+                                        <span>&#9881;</span>
+                                        Derived Rules (AI-Generated)
+                                    </div>
+                                    <ul class="derived-rules">
+                                        <li class="derived-rule">
+                                            <span class="rule-icon">&#10003;</span>
+                                            <span class="rule-text">Prefer United for all routes where fare delta is <span class="rule-param">&lt;15%</span> vs. lowest competitor</span>
+                                        </li>
+                                        <li class="derived-rule">
+                                            <span class="rule-icon">&#10003;</span>
+                                            <span class="rule-text">Auto-select United for routes: SFO-ORD, LAX-EWR, DEN-IAH (hub routes with best discount)</span>
+                                        </li>
+                                        <li class="derived-rule">
+                                            <span class="rule-icon">&#10003;</span>
+                                            <span class="rule-text">Alert travel manager when United volume reaches <span class="rule-param">80%</span> of Q4 target</span>
+                                        </li>
+                                        <li class="derived-rule">
+                                            <span class="rule-icon">&#10003;</span>
+                                            <span class="rule-text">Track and report monthly: segments flown, discount captured, status qualification progress</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Policy Card 2 - Cabin Class -->
+                        <div class="policy-card">
+                            <div class="policy-card-header">
+                                <div class="policy-status">
+                                    <div class="status-indicator active"></div>
+                                    <span class="policy-title">Cabin Class Guidelines</span>
+                                </div>
+                                <div class="policy-meta">
+                                    <span>Created: Nov 15, 2024</span>
+                                    <span>|</span>
+                                    <span>Modified: Dec 8, 2024</span>
+                                </div>
+                            </div>
+                            <div class="policy-card-body">
+                                <div class="objective-block">
+                                    <div class="block-label">
+                                        <span>&#127919;</span>
+                                        Business Objective
+                                    </div>
+                                    <p class="objective-text">Balance cost control with traveler productivity. We want our team rested and effective for client meetings, but we need to manage our travel budget responsibly.</p>
+                                    <button class="edit-btn">Edit</button>
+                                </div>
+
+                                <div class="derived-block">
+                                    <div class="block-label">
+                                        <span>&#9881;</span>
+                                        Derived Rules (AI-Generated)
+                                    </div>
+                                    <ul class="derived-rules">
+                                        <li class="derived-rule">
+                                            <span class="rule-icon">&#10003;</span>
+                                            <span class="rule-text">Economy class required for flights <span class="rule-param">&lt;4 hours</span> domestic</span>
+                                        </li>
+                                        <li class="derived-rule">
+                                            <span class="rule-icon">&#10003;</span>
+                                            <span class="rule-text">Premium Economy allowed for flights <span class="rule-param">4-6 hours</span></span>
+                                        </li>
+                                        <li class="derived-rule">
+                                            <span class="rule-icon">&#10003;</span>
+                                            <span class="rule-text">Business class permitted for international flights <span class="rule-param">&gt;6 hours</span></span>
+                                        </li>
+                                        <li class="derived-rule">
+                                            <span class="rule-icon">&#10003;</span>
+                                            <span class="rule-text">Auto-approve upgrades when fare delta is <span class="rule-param">&lt;$200</span> and departure is within 24 hours</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Policy Card 3 - Pending Review -->
+                        <div class="policy-card">
+                            <div class="policy-card-header">
+                                <div class="policy-status">
+                                    <div class="status-indicator pending"></div>
+                                    <span class="policy-title">Advance Booking Requirements</span>
+                                </div>
+                                <div class="policy-meta">
+                                    <span>Created: Dec 12, 2024</span>
+                                    <span>|</span>
+                                    <span style="color: var(--warning-yellow); font-weight: 600;">Pending Review</span>
+                                </div>
+                            </div>
+                            <div class="policy-card-body">
+                                <div class="objective-block">
+                                    <div class="block-label">
+                                        <span>&#127919;</span>
+                                        Business Objective
+                                    </div>
+                                    <p class="objective-text">Capture early booking discounts while maintaining flexibility for urgent business needs.</p>
+                                    <button class="edit-btn">Edit</button>
+                                </div>
+
+                                <div class="derived-block">
+                                    <div class="block-label">
+                                        <span>&#9881;</span>
+                                        Derived Rules (AI-Generated)
+                                    </div>
+                                    <ul class="derived-rules">
+                                        <li class="derived-rule">
+                                            <span class="rule-icon">&#10003;</span>
+                                            <span class="rule-text">Target <span class="rule-param">14+ days</span> advance booking for planned travel</span>
+                                        </li>
+                                        <li class="derived-rule">
+                                            <span class="rule-icon">&#10003;</span>
+                                            <span class="rule-text">Allow same-day booking with manager approval for client emergencies</span>
+                                        </li>
+                                        <li class="derived-rule">
+                                            <span class="rule-icon">&#10003;</span>
+                                            <span class="rule-text">Flag bookings &lt;7 days for travel manager visibility</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- AI Suggestions Sidebar -->
+                <aside class="suggestions-sidebar">
+                    <div class="hotspot" style="top: 20px; left: 10px;">7</div>
+                    
+                    <div class="suggestions-header">
+                        <h3>AI Recommendations</h3>
+                        <span class="ai-badge">Powered by AI</span>
+                    </div>
+
+                    <!-- Smart Suggestion -->
+                    <div class="suggestion-card">
+                        <div class="suggestion-type">
+                            <span>&#128161;</span>
+                            Smarter Alternative
+                        </div>
+                        <div class="suggestion-current">"No business class for any domestic flights"</div>
+                        <div class="suggestion-proposed">
+                            <strong>Consider:</strong> "Economy for domestic flights under 4 hours; Premium Economy allowed for 4-6 hour flights when fare delta is under $150"
+                        </div>
+                        <div class="suggestion-rationale">
+                            Balances cost control with traveler comfort on longer routes. Based on industry benchmarks, this approach reduces complaints by 40% while keeping costs within 8% of strict economy-only policies.
+                        </div>
+                        <div class="suggestion-actions">
+                            <button class="btn-accept">Apply Suggestion</button>
+                            <button class="btn-dismiss">Dismiss</button>
+                        </div>
+                    </div>
+
+                    <!-- Policy Insights -->
+                    <div class="hotspot" style="top: 280px; left: 10px;">8</div>
+                    
+                    <div class="insights-card">
+                        <div class="insights-header">
+                            <span>&#128200;</span>
+                            <h4>Policy Performance</h4>
+                        </div>
+                        <div class="insight-stat">
+                            <span class="insight-label">Overall Compliance Rate</span>
+                            <span class="insight-value positive">94%</span>
+                        </div>
+                        <div class="insight-stat">
+                            <span class="insight-label">United Volume Progress</span>
+                            <span class="insight-value">342 / 500 segments</span>
+                        </div>
+                        <div class="insight-stat">
+                            <span class="insight-label">Estimated Q4 Savings</span>
+                            <span class="insight-value positive">$47,200</span>
+                        </div>
+                        <div class="insight-stat">
+                            <span class="insight-label">Policy Exceptions (MTD)</span>
+                            <span class="insight-value warning">12</span>
+                        </div>
+                    </div>
+
+                    <!-- Conflict Alert -->
+                    <div class="hotspot" style="top: 480px; left: 10px;">9</div>
+                    
+                    <div class="conflict-alert">
+                        <div class="conflict-header">
+                            <span class="conflict-icon">&#9888;</span>
+                            <h4>Policy Conflict Detected</h4>
+                        </div>
+                        <div class="conflict-desc">
+                            "Advance Booking Requirements" may conflict with "United Partnership" on last-minute bookings where United has better availability but requires quick decisions.
+                        </div>
+                        <button class="conflict-resolve">Review &amp; Resolve</button>
+                    </div>
+                </aside>
+            </div>
+        </main>
+    </div>
+
+    <!-- Demo State Banner -->
+    <div class="demo-banner">
+        <span class="demo-label">Demo State:</span>
+        <button class="demo-btn active" onclick="showState('default')">Default View</button>
+        <button class="demo-btn" onclick="showState('creating')">Creating Policy</button>
+        <button class="demo-btn" onclick="showState('processing')">AI Processing</button>
+        <button class="demo-btn" onclick="showState('conflict')">Conflict Mode</button>
+    </div>
+
+    <script>
+        // Annotation interactions
+        document.querySelectorAll('.annotation-item').forEach(item => {
+            item.addEventListener('click', () => {
+                document.querySelectorAll('.annotation-item').forEach(i => i.classList.remove('active'));
+                item.classList.add('active');
+            });
+        });
+
+        // Hotspot interactions
+        document.querySelectorAll('.hotspot').forEach(hotspot => {
+            hotspot.addEventListener('click', () => {
+                const num = hotspot.textContent;
+                document.querySelectorAll('.annotation-item').forEach(item => {
+                    item.classList.remove('active');
+                    if (item.querySelector('.annotation-number').textContent === num) {
+                        item.classList.add('active');
+                        item.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    }
+                });
+            });
+        });
+
+        // Mode toggle
+        document.querySelectorAll('.mode-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            });
+        });
+
+        // Category selection
+        document.querySelectorAll('.category-item').forEach(item => {
+            item.addEventListener('click', () => {
+                document.querySelectorAll('.category-item').forEach(i => i.classList.remove('active'));
+                item.classList.add('active');
+            });
+        });
+
+        // Demo state switcher
+        function showState(state) {
+            document.querySelectorAll('.demo-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            console.log('Switching to state:', state);
+            // In full implementation, this would swap out content
+        }
+
+        // Starter policy hover effect
+        document.querySelectorAll('.starter-policy').forEach(policy => {
+            policy.addEventListener('click', () => {
+                const text = policy.querySelector('.starter-text').textContent;
+                document.querySelector('.input-textarea').value = text;
+            });
+        });
+    </script>
+</body>
+</html>
