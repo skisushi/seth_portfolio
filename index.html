@@ -450,20 +450,22 @@
 <!-- ── VEYANT ── -->
 <div class="section" id="veyant">
   <p class="section-label">The Work</p>
-  <h2>Veyant &nbsp;&mdash;&nbsp; AI Orchestration for Corporate Travel</h2>
+  <h2>Veyant &nbsp;&mdash;&nbsp; AI Infrastructure for Corporate Travel</h2>
   <p class="section-sub">Independent research &amp; proof-of-concept, Oct 2024&ndash;Feb 2026</p>
 
-  <p>Every travel platform makes users search. Veyant was built to explore a different question: what if AI agents had the context and infrastructure to act on a traveler's behalf &mdash; not just find options, but book, rebook, and service entire trips?</p>
+  <p>Think of it as <strong>Plaid for AI agents</strong> &mdash; combined with Mint for travel. Veyant is the connectivity infrastructure layer that gives AI agents the credentials, corporate policies, loyalty context, and supplier access they need to actually execute travel transactions. Not search. Execute.</p>
 
   <div style="background: var(--bg-alt); border: 1px solid var(--border); border-radius: 8px; padding: 20px; margin: 24px 0;">
     <img src="img/today%20vs%20tommorow%20veyant.jpg" alt="Today: 47+ options, 15 minutes search, 30+ minutes to confirmation. Tomorrow with Veyant: Perfect match found, approve in 30 seconds." style="width: 100%; border-radius: 4px;" />
   </div>
 
-  <p>There are two things blocking AI in travel right now. First, the trust problem &mdash; travelers won't hand over their data to platforms that turn around and use it for marketing and dynamic pricing. The AI agent is blind. Second, the capability problem &mdash; nobody has built the connectivity to actually book, change, and service trips across suppliers with full loyalty and policy context. The AI agent can't execute. The travel robot is stuck.</p>
+  <p>The problem isn't the AI. Claude, GPT-4, Gemini &mdash; any of them can reason about travel. The problem is that AI agents have no access to the traveler's loyalty credentials, no view of the corporate policy, no connection to the supplier APIs that actually process bookings. The agent is smart but blind. Veyant provides the infrastructure context that lets it see and act.</p>
 
-  <p>Veyant's concept: three data cubes (traveler, corporate, supplier) feeding AI agents that work in parallel &mdash; from natural language request to confirmed booking. The traveler controls their data. The AI has the context to act. Result: 83% of TMC tickets currently handled manually could be automated.</p>
+  <p>The architecture organizes all travel context into three federated data domains &mdash; <strong>My Travel Cube</strong> (loyalty accounts, preferences, payment credentials), <strong>Corporate Cube</strong> (policy rules, negotiated rates, approval thresholds), and <strong>Supplier Cube</strong> (NDC/GDS connectivity, availability, pricing). A GraphQL Mesh gateway queries all three in parallel and returns exactly the context the AI needs &mdash; reducing a 2.5-second sequential chain of API calls to a single 800ms parallel query. The AI describes <em>what</em> data it needs. The gateway handles <em>how</em> to fetch it.</p>
 
-  <p>Five months of independent work produced original frameworks, working architecture, a product backlog, four wireframed interfaces, and a working demo built with Claude Code. The pitch deck, the technical exploration, and the working code are all available below.</p>
+  <p>Market validation from TMC CTOs confirms the 80/20 rule: connectivity expertise is 80% of the value; AI capability is 20%. That split is the competitive moat. 20+ years of airline technology infrastructure experience from Navitaire and Amadeus &mdash; 60+ PSS implementations globally &mdash; is not something foundation model providers or consumer travel apps can replicate. The primary market is Travel Management Companies: 83% of their tickets are handled manually today at $20+ per ticket. The servicing cost problem is solved at the infrastructure layer, not the application layer.</p>
+
+  <p>Five months of independent work produced original technical frameworks, working architecture, a product backlog, wireframed interfaces, and a working proof-of-concept built with Claude Code and a live MCP server. The pitch deck, architecture, and working code are all below.</p>
 
   <a class="cta cta-ghost" href="docs/veyant-pitch-deck.pdf" target="_blank">
     View the pitch deck &rarr;
