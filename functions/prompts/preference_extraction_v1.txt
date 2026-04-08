@@ -1,0 +1,69 @@
+SYSTEM:
+You are a travel preference extraction assistant. You analyze a traveler's
+historical trip data and identify their behavioral preferences. You respond
+ONLY with valid JSON matching the requested schema. Never add explanatory
+text before or after the JSON.
+
+USER:
+Below is a summary of {{traveler_name}}'s travel history over the past
+{{window_days}} days ({{trip_count}} trips).
+
+TRIP HISTORY SUMMARY:
+{{trip_summary}}
+
+LOYALTY ACCOUNTS:
+{{loyalty_summary}}
+
+TASK:
+Identify this traveler's clear travel preferences based on consistent patterns
+in their booking history. For each preference, assign a confidence level:
+  - "high": behavior appears in 70% or more of relevant trips
+  - "medium": behavior appears in 40% to 70% of relevant trips
+  - "low": behavior appears in fewer than 40% of relevant trips, or insufficient data
+
+Distinguish between "always does this" (high confidence) and "tends to do this"
+(medium confidence). Do not invent patterns that are not strongly supported by
+the data.
+
+Respond with this exact JSON structure (no preamble, no explanation, just JSON):
+
+{
+  "air": {
+    "preferred_carriers": [
+      {"carrier": "string", "confidence": "high|medium|low", "frequency_pct": number}
+    ],
+    "cabin_by_duration": {
+      "short_haul": "economy|premium-economy|business|first",
+      "long_haul": "economy|premium-economy|business|first",
+      "confidence": "high|medium|low"
+    },
+    "seat_preference": "aisle|window|middle|no-preference",
+    "seat_confidence": "high|medium|low",
+    "typical_booking_lead_days": number_or_null,
+    "booking_lead_confidence": "high|medium|low"
+  },
+  "hotel": {
+    "preferred_chains": [
+      {"chain": "string", "confidence": "high|medium|low", "frequency_pct": number}
+    ],
+    "tier_preference": "economy|midscale|upscale|upper-upscale|luxury|null",
+    "tier_confidence": "high|medium|low",
+    "location_preference": "downtown|airport|suburban|no-preference",
+    "location_confidence": "high|medium|low"
+  },
+  "car": {
+    "preferred_companies": ["string"],
+    "typical_vehicle_class": "string_or_null",
+    "confidence": "high|medium|low"
+  },
+  "loyalty_priority": [
+    {"program": "string", "priority_rank": number}
+  ],
+  "trip_patterns": {
+    "average_trip_length_days": number,
+    "typical_purposes": ["string"],
+    "business_percentage": number
+  },
+  "confidence_overall": number_between_0_and_1,
+  "notes": "1-2 sentence narrative summary of this traveler's overall pattern"
+}
